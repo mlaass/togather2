@@ -106,33 +106,14 @@ app.get('/', all, function(req, res){
 	}});
 });
 app.get('/edit', login, function(req, res){
-	res.redirect('/create');
-});
-app.get('/levels/list', login, function(req, res){
-	res.render('list',{
-		locals: {
-			title: title('Play'),
-			level: 'New Level'
-		}});
-});
-app.get('/levels', login, function(req, res){
-	levels.getAll( function(err, levels){
-		if(levels.length===0){
-			levels = [{name: 'no level', _id:'newlevel'}];
-		}
-	res.render('list',{
-		locals: {
-			title: title('Play'),
-			levels: levels 
-		}});
-	});
+	res.redirect('/levels');
 });
 app.get('/create', login, function(req, res){
 	levels.create(function(err, lvl){
-		console.log(lvl);
 		res.redirect('/edit/'+lvl._id);
 	});
 });
+
 app.get('/edit/:level', login, function(req, res){
 	if(req.params.level==='newlevel'){
 		res.redirect('/create');
@@ -154,9 +135,41 @@ app.get('/edit/:level', login, function(req, res){
 			});
 		});
 	}
-	
-
 });
+app.get('/levels', login, function(req, res){
+	levels.getAll( function(err, levels){
+		res.render('list',{
+			locals: {
+				title: title('Play'),
+				levels: levels 
+			}
+		});
+	});
+});
+app.get('json/levels/:from/:to', login, function(req, res){
+	var from = parseInt(req.params.from, 10),
+	to = parseInt(req.params.from, 10),
+	num = to-from;
+	levels.getNumFrom(num, from, function(err, levels){
+		if(err){
+			res.send(err);
+			return;
+		}
+		res.send(levels);
+	});
+});
+
+app.get('json/levels', login, function(req, res){
+	levels.getAll( function(err, levels){
+		if(err){
+			res.send(err);
+			return;
+		}
+		res.send(levels);
+	});
+});
+
+
 /**
  * user management
  */

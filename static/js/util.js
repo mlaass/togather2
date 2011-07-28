@@ -4,14 +4,11 @@ $(document).ready(function(){
 	helpbutton = $('#help-button'), 
 	buttons = $('.button');
 	
-	if( !$jo ){
-		$jo = {};
-	}	        	
-	
-	$jo.tool='tile';       		
-	
 	buttons.each(function(vent, obj){
 		var o = $(obj), txt= o.attr('name');
+		if(o.hasClass('link')){
+			o = o.find('a');
+		}
 		if(txt === '' || !txt){
 			txt = o.attr('id');
 		}

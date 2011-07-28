@@ -4,8 +4,9 @@ var mongoose = require('mongoose'),
 
 var Schema = mongoose.Schema,
 	LevelSchema, 
-	Level;
-var createName = function(minlength, maxlength, prefix, suffix) {
+	Level,
+	TileSchema;
+function createName(minlength, maxlength, prefix, suffix) {
 	var rnd = function(minv, maxv){
 		if (maxv < minv)
 			return 0;
@@ -56,17 +57,29 @@ var createName = function(minlength, maxlength, prefix, suffix) {
 	name = name.charAt(0).toUpperCase() + name.substring(1, name.length)+ suffix;
 	return name;
 };
+function initData(){
+	var a = [];
+	for(var i=0; i< 16*16; i++){
+		a.push({index: -1});
+	}
+	return JSON.stringify(a);
+};
+function initName(){
+	return createName(4, 7)+' '+createName(5,9);
+};
 
-var initData= function(){
-		var a = [];
-		for(var i=0; i< 16*16; i++){
-			a.push({index: -1});
-		}
-		return a;
-	},
-	initName= function(){
-		return createName(12, 14, 'level: ');
-	};
+function setData(data){
+	if(typeof data !=='string'){
+		data = JSON.stringify(data);
+	}
+	return data;
+};
+function getData(data){
+	if(typeof data ==='string'){
+		data= JSON.parse(data);
+	}
+	return data;
+};
 LevelSchema = new Schema({
 	  'name': {type: String, 'default': initName()},
 	  'date': {type: Date, 'default': Date.now},
@@ -74,7 +87,7 @@ LevelSchema = new Schema({
 	  'creator': {type: Schema.ObjectId},
 	  'width': {type: Number, 'default': 16},
 	  'height': {type: Number, 'default': 16},
-	  'data': {type: [], 'default': initData()}
+	  'data': {type: String, 'default': initData()}
 });
 
 
@@ -100,11 +113,12 @@ module.exports.create = function( fn){
 		fn(err, lvl);
 	});
 };
-module.exports.update = function(lvl, fn){
-	lvl.lastUpdate = Date.Now();
-	lvl = new Level(lvl);	
+module.exports.update = function(lvl){
+	lvl.lastUpdate = Date.now();
+	console.log('assign lvl');
+	lvl = new Level(lvl);
 	lvl.save(function(err){
-		fn(err, lvl);
+		console.log(err);
 	});
 };
 module.exports.getByName = function(name, fn){

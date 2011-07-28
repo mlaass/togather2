@@ -20,6 +20,7 @@ body{
 }
 #container{
 	margin-bottom: 148px;
+	font-family: 'Delius', Arial, Helvetica, Serif; 
 }
 a{
 	color: #fe7b2b;
@@ -40,6 +41,10 @@ a:hover{
 	text-shadow: #69aedb 2px 2px 0;
 	font-size: 32px;
 	font-family: 'Leckerli One', Arial, Helvetica, Serif; 
+}
+#create-level{
+	font-size: 18;
+	font-weight: bold;
 }
 #canvas{
 	position:absolute;
@@ -94,7 +99,16 @@ a:hover{
 	margin: 0;
 	padding: 0;
 }
-
+#status{
+	position: absolute;
+	top: 4px;
+	right: 16px;	
+	height: 32px;
+	z-index: 99;
+	margin: 0;
+	padding: 0;
+}
+}
 #tools{
 	height: 32px;
 	z-index: 99;
@@ -112,6 +126,10 @@ a:hover{
 	border-radius: 32px;
 	-moz-border-radius: 32px;
 	-webkit-border-radius: 32px;
+	cursor: pointer;
+}
+.button a{
+	text-shadow: none;
 }
 #tools li:hover, .botton:hover{
 	border: 1px solid rgba(255,196,0,1);
@@ -159,7 +177,7 @@ a:hover{
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	z-index: 99;
+	z-index: 9;
 }
 #sidebar .panel{
 	margin: 0;

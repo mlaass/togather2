@@ -1,22 +1,24 @@
 var Grid = module.exports.Grid = function(opt) {
-	this.name= opt.name;
+	this.name = opt.name;
+	this._id= opt._id;
 	this.width = this.height = 16;
-	
+
 	if(opt && opt.width && opt.height){
 		this.width = opt.width;
 		this.height = opt.height;
 	}
-	
+
 	this.data = [];
 	for( var i = 0; i < this.width * this.height; i++) {
 		this.data.push(0);
 	}
 	this.clearTo({index: -1});
-	
-	if(opt && opt.data && opt.data.length === this.data.length){
+	if(typeof opt.data === 'string'){
+		opt.data = JSON.parse(opt.data);
+	}
+	if(opt.data && opt.data.length === this.data.length){
 		this.data = opt.data;
 	}
-	
 };		
 
 Grid.prototype.clearTo = function(value) {
@@ -44,7 +46,7 @@ Grid.prototype.get = function(x, y) {
 	if (x >= 0 && x < this.width && y >= 0 && y < this.height) {
 		return this.data[x + y * this.width];
 	}
-	jo.log('grid.get out of bounds: ' + x + ' | ' + y);
+	console.log('grid.get out of bounds: ' + x + ' | ' + y);
 };
 
 Grid.prototype.put = function(x, y, value) {
@@ -53,7 +55,7 @@ Grid.prototype.put = function(x, y, value) {
 	}			
 },
 
-Grid.prototype.copy= function(frame){
+Grid.prototype.copy = function(frame){
 	if(typeof frame === 'undefined'){
 		frame = {};
 		frame.x = 0;
@@ -65,9 +67,9 @@ Grid.prototype.copy= function(frame){
 	frame.y = Math.max(0, frame.y);
 	frame.width = Math.max(this.width, frame.width);
 	frame.height = Math.max(this.height, frame.height);
-	
-	copy = new jo.Grid(frame.width, frame.height);
-	
+
+	copy = new Grid({width:frame.width, height:frame.height});
+
 	for(var i = 0; i< frame.height; i++){
 		for(var j = 0; j< frame.width; j++){
 			copy.put(j,i,this.get(frame.x + j, frame.y + i));
@@ -75,15 +77,15 @@ Grid.prototype.copy= function(frame){
 	}
 	return copy;
 };
-Grid.prototype.shift= function(x, y, clear){
-	var copy = this._copy();
+Grid.prototype.shift = function(x, y, clear){
+	var copy = this.copy();
 	if(typeof clear !== 'undefined'){
-		this._clearTo(clear);
+		this.clearTo(clear);
 	}
-	this._blit(copy,x,y);
+	this.blit(copy,x,y);
 };
 Grid.prototype.resize= function(width, height, clear){
-	var copy = this._copy();
+	var copy = this.copy();
 	this.width= width;
 	this.height = height;
 	this.data=[];
@@ -91,8 +93,8 @@ Grid.prototype.resize= function(width, height, clear){
 		this.data.push(0);
 	}
 	if(typeof clear !== 'undefined'){
-		this._clearTo(clear);
+		this.clearTo(clear);
 	}
-	this._blit(copy,0,0);
+	this.blit(copy,0,0);
 };
 

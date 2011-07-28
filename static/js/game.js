@@ -2,8 +2,7 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 		function(jo, Game, Camera, Animation, Level, ioclient, sidebar){	
 	//one global variable to rule them all very useful with the browser console
 	$jo=jo;
-	jo.tilesize = 32;
-	
+
 	//the game object needs id of the canvas 
 	var game = jo.game = new Game({ name: '#canvas', fullscreen: true, fps: 30});
 	game.setup(function(){
@@ -33,27 +32,32 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 				}				
 				game.map.tileSet = game.ts;
 				
-//				var chat = yoda.entangleInstance('chat', Chat);
-//				game.map = yoda.entangleInstance('map', Level);
-//
-//				game.map.tileSet = game.ts;
-//				
-//				$('#chat-text').html(chat.clientRenderHtml());
-//				
-//				$('#chat-form').submit(function(e){
-//					var msg = $('#chat-input').val();
-//					if(msg !== ''){
-//						chat.post({time: '$time', client: '$id', text:msg });
-//					}
-//					
-//					$('#chat-input').val('');
-//					e.preventDefault();
-//					return false;
-//				});
-//				yoda.sync(function(msg){
-//					$('#chat-text').html(chat.clientRenderHtml());
-//					jo.log(msg);
-//				});
+				ioclient.sync('resize', game.map);
+				ioclient.sync('put', game.map);
+				ioclient.sync('shift', game.map);
+				$('#loading').hide();
+				
+	//				var chat = yoda.entangleInstance('chat', Chat);
+	//				game.map = yoda.entangleInstance('map', Level);
+	//
+	//				game.map.tileSet = game.ts;
+	//				
+	//				$('#chat-text').html(chat.clientRenderHtml());
+	//				
+	//				$('#chat-form').submit(function(e){
+	//					var msg = $('#chat-input').val();
+	//					if(msg !== ''){
+	//						chat.post({time: '$time', client: '$id', text:msg });
+	//					}
+	//					
+	//					$('#chat-input').val('');
+	//					e.preventDefault();
+	//					return false;
+	//				});
+	//				yoda.sync(function(msg){
+	//					$('#chat-text').html(chat.clientRenderHtml());
+	//					jo.log(msg);
+	//				});
 			}
 		});		
 				

@@ -2,6 +2,7 @@ define(['jo/jo'], function(jo){
 	var sb = new (jo.Class.extend({
 		init: function(){
 			this.params= $('#inspector #properties');
+			jo.tool = 'tile';
 		},
 		setup: function(){
 			var self = this;
