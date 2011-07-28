@@ -1,0 +1,19 @@
+script( data-main='/js/game', src='/js/require.js')
+ul#menu
+	li#chat-button(class='button hidden', name='chat') 
+	li#help-button(class='button hidden', name='help') 
+	
+ul#sidebar!= partial('sidebar', {locals:{bla: 'bal'}})
+#help(style='display:none;')!=partial('help');
+
+canvas#canvas
+	p unfortunately your browser lacks canvas support! get 
+	a(href='http://www.mozilla.com/firefox/') Firefox
+	, 
+	a(href='http://www.google.com/chrome') Chrome
+	,
+	a(href='http://apple.com/safari/') Safari 
+	or 
+	a(href='http://opera.com') Opera 
+	to run this game.
+

@@ -1,0 +1,210 @@
+
+body{
+	font-family: 'Unkempt', Arial, Helvetica, Serif; 
+	font-size: 16px;
+	background: url('/img/bgtexture.png') #eee;
+	padding: 0;
+	margin: 0;
+}
+#container, #head, .flash{
+	width: 928px;
+	margin: 0 auto;
+	padding: 16px;
+	background: rgba(255,255,255,0.3);
+	display: block;
+}
+.flash{
+		border: 2px solid #fe0e00;
+		margin: 8px auto;
+		background: #fefecc;
+}
+#container{
+	margin-bottom: 148px;
+}
+a{
+	color: #fe7b2b;
+	text-decoration: none;
+	text-shadow: #69aedb 1px 1px 0;
+}
+a:hover{
+	color: #fe7b2b;
+	text-shadow: none;
+}
+#head{
+	background: url('/img/jomoho_profile_64.png') transparent no-repeat;
+	background-position: 4px 10px;
+	height: 64px;
+	text-indent: 64px;
+	text-decoration: none;
+	color: #fe7b2b;
+	text-shadow: #69aedb 2px 2px 0;
+	font-size: 32px;
+	font-family: 'Leckerli One', Arial, Helvetica, Serif; 
+}
+#canvas{
+	position:absolute;
+}
+#chat, #help{
+	position: absolute;
+	z-index:2;
+	top: 0;
+	left: 0;
+	width: 312px;
+	height: 100%;
+	background: rgba(255,255,255, 0.5);
+	padding: 0 4px;
+}
+#chat :first-child, #help :first-child{
+	margin-top: 96px;
+}
+#chat-text{
+	font-size: 10px;
+}
+#chat-text.time, #chat-text.name{
+	
+}
+#chat-form{
+	z-index:2;
+	position:absolute;
+	left: 8px;
+	bottom:8px;
+}
+#chat-input{
+	width: 224px;
+}
+
+#help{
+	z-index: 3;
+	background: #ccc;
+	font-size: 11px;
+}
+
+#chat-button img{
+	background-position: -160px 0;
+}
+#chat-button.hidden img{
+	background-position: -192px 0;
+}
+#menu{
+	position: absolute;
+	top: 16px;
+	left: 8px;	
+	height: 32px;
+	z-index: 99;
+	margin: 0;
+	padding: 0;
+}
+
+#tools{
+	height: 32px;
+	z-index: 99;
+	margin: 4px 8px;
+}
+
+#tools li, .button{
+	width: 32px;
+	height: 32px;
+	display: block;
+	float: left;
+	margin: 0 8px;
+	padding: 1px;	
+	border: 1px solid transparent;
+	border-radius: 32px;
+	-moz-border-radius: 32px;
+	-webkit-border-radius: 32px;
+}
+#tools li:hover, .botton:hover{
+	border: 1px solid rgba(255,196,0,1);
+}
+#tools li.active{
+	background-color: rgba(255,196,0,0.8);
+}
+#tools img, .button img{
+	width: 32px;
+	height: 32px;
+	display: block;
+	background: url(../img/icons.png) 0 -32px;
+}
+#tools span, .button span{
+	position: relative;
+	bottom: -2px;
+	left: auto;
+	background: rgba(0,0,0,0.3);
+	color: rgba(255,255,255,0.8);
+	font-weight: bold;
+	font-size: 16px;
+	padding: 0 8px;
+	border-radius: 16px;
+	-moz-border-radius: 16px;
+	-webkit-border-radius: 16px;
+}
+#tools #pick img{
+	background-position: -32px -32px;
+}
+#tools #tile img{
+	background-position: -64px -32px;
+}
+#tools #settings img{
+	background-position: -96px -32px;
+}
+#sidebar{
+	position: absolute;
+	right: 0;
+	top: 0;
+	width: 224px;
+	height: 100%;
+	background: white;
+	border: none;
+	border-left: 1px solid #ccc;
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	z-index: 99;
+}
+#sidebar .panel{
+	margin: 0;
+	padding: 0;
+	min-height: 96px;	
+}
+ul{
+	margin: 0;
+	padding: 0;
+}
+#sidebar h2{
+	margin: 0 0 8px 0;
+	padding: 4px 0;
+	font-size: 16px;
+	background: #ccc;
+	text-indent: 8px;
+}
+#sidebar form{
+	padding: 0 4px;
+}
+.pair label, .pair input.name{
+	width: 80px;
+	display: inline-block;
+}
+.pair input{
+	width: 120px;
+	margin-left: 4px;
+	display: inline-block;	
+}
+#tile-select{
+	max-height: 256px;
+	overflow-y: auto;
+	margin-bottom: 4px;
+}
+#tiles-select:after{
+	clear: both;	
+}
+#tile-select li{
+	display: inline-block;
+	border: 2px solid white;
+	
+}
+#tile-select li:hover{
+	border: 2px solid #ccc;
+}
+#tile-select li.selected{
+	border: 2px solid #fc0;
+}

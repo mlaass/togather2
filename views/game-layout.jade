@@ -1,0 +1,17 @@
+!!! 5
+html 
+  head
+    title #{title}
+    link(rel= 'stylesheet', href='/css/style.css')
+    link(href='http://fonts.googleapis.com/css?family=Unkempt&v1', rel='stylesheet', type='text/css')
+    script(src='/socket.io/socket.io.js')
+    script=startscript
+    -if(levelId)
+      script(type='text/javascript') var levelId = "#{levelId}";
+  body!= body
+  // script(type='text/javascript', src= 'https://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js')
+  script(type='text/javascript', src= '/js/jquery.js')
+  // script(type='text/javascript', src= '/js/plugins/jquery.form.js')
+  script(type='text/javascript', src= '/js/plugins/jquery.cookie.js')
+  script(type='text/javascript', src= '/js/util.js')
+  script!=googleAnalytics

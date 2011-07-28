@@ -1,0 +1,33 @@
+li.panel(name='tools')
+	h2 tools
+	ul#tools
+		li#drag.button
+		li#pick.button(name='pick')
+		li#tile.button.active   
+		li#settings.button(name='set')    
+li#toolprops.panel
+	h2 tool properties    	
+	#pick-prop.tool-prop(style='display: none;') 		        	
+		form#add-entity(action='addEntity')
+			p    	
+				select(name='entity-select', size='1')
+				input(type='submit', value='add Entity') 
+	#tile-prop.tool-prop
+		ul#tile-select 
+		
+	form#settings-prop.tool-prop(action='mapSettings', style='display: none;') 
+		p.pair
+			label(for='name') name: 
+			input#name'
+		p.pair
+			label(for='width') width: 
+			input#width'
+		p.pair
+			label(for='height') height: 
+			input#height'     		
+		p.end
+			input(type='reset', value='Cancel')
+			input(type='submit', value='Apply')  
+li#inspector.panel(name='inspector')
+	h2 inspector
+	ul#properties

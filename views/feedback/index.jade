@@ -1,0 +1,17 @@
+a(href='/')#head
+#container 
+  h1 Feedback
+  
+  -if(thanks)
+    p #{thanks}
+  -else
+    h3 Tell us what you thought about the game.
+    form(action='/feedback', method='POST')
+      p
+        input(type='text', name='feedback[name]', value='name')
+      p
+        textarea(name='feedback[text]') feedback
+      p
+        input(type='submit', value='submit feedback')
+      
+  #feedback!= partial('item',{collection: feedback})
