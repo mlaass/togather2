@@ -108,6 +108,19 @@ a:hover{
 	margin: 0;
 	padding: 0;
 }
+#loading{
+	background: url('/img/ajax-loader.gif') transparent no-repeat;
+	padding-left: 24px;
+	width: 40px;
+}
+#loading{
+	background: url('/img/ajax-loader.gif') transparent no-repeat;
+	padding-left: 24px;
+	width: 40px;
+}
+#saved{
+	background: url('/img/check.png') transparent no-repeat;
+	padding-left: 24px;
 }
 #tools{
 	height: 32px;

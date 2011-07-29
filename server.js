@@ -127,7 +127,7 @@ app.get('/edit/:level', login, function(req, res){
 			req.session.level = new Grid(level); 
 			res.render('edit',{
 				locals: {
-					title: title('Play'),
+					title: title(level.name+': Edit'),
 					levelId: req.params.level,
 					level: JSON.stringify(level)
 				},
@@ -140,7 +140,7 @@ app.get('/levels', login, function(req, res){
 	levels.getAll( function(err, levels){
 		res.render('list',{
 			locals: {
-				title: title('Play'),
+				title: title('Levels'),
 				levels: levels 
 			}
 		});
