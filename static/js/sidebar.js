@@ -29,19 +29,19 @@ define(['jo/jo'], function(jo){
 			$('#toolprops form').each(function(ev, obj){
 				$(obj).submit(function(han){
 					var act = $(obj).attr('action');
-					$jo.game.sb.actions[act+'Submit']($(obj));
+					$jo.editor.sb.actions[act+'Submit']($(obj));
 					return false;
 				});
 			});
 			//entity select
 			var eselect = $('#add-entity select');
-			for(var i in jo.game.entitylist){
-				eselect.append($('<option>').html(jo.game.entitylist[i]));
+			for(var i in jo.editor.entitylist){
+				eselect.append($('<option>').html(jo.editor.entitylist[i]));
 			}
 			
 			//tiles
 			var tselect = $('#tile-prop #tile-select'), 
-			tiles = $jo.game.ts.getCss();			
+			tiles = $jo.editor.ts.getCss();			
 			for(var i in tiles){
 				tselect.append($('<li>').attr('style', tiles[i]).attr('name', i));
 			}
@@ -50,7 +50,7 @@ define(['jo/jo'], function(jo){
 				$(obj).click(function(){
 					tiles.removeClass('selected');
 					$(obj).addClass('selected');
-					$jo.game.tileBrush = parseInt($(obj).attr('name'));
+					$jo.editor.tileBrush = parseInt($(obj).attr('name'));
 				});
 			});
 			
@@ -84,7 +84,7 @@ define(['jo/jo'], function(jo){
 			mapSettingsSubmit: function(form){
 				var w = $('#width').val(), h = $('#height').val();
         		w = parseInt(w, 10), h = parseInt(h, 10);
-        		$jo.game.map.resize(w,h, {index: -1});
+        		$jo.editor.map.resize(w,h, {index: -1});
 			}
 		},
 		tools:{
@@ -97,7 +97,7 @@ define(['jo/jo'], function(jo){
         			var type= $(obj).attr('type');
         			if( type!=='reset' && type!=='submit'){
 	        			var o = $(this);
-	        			o.val($jo.game.map[o.attr('id')]+'');
+	        			o.val($jo.editor.map[o.attr('id')]+'');
         			}
         		});
 			},

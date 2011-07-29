@@ -17,7 +17,7 @@ define(['jo/jo', 'jo/Point', 'jo/Surface', './Level'], function(jo, Point, Surfa
 		return prefix+name+'('+JSON.stringify(args)+')';
 	};
 	
-	exports.init = function(game, fn){
+	exports.init = function(fn){
 		fn = fn || function(){};
 		channel = 'lvl:'+levelId;
 		

@@ -2,6 +2,7 @@ $(document).ready(function(){
 	settings = $('#tools #settings'),
 	chatbutton = $('#chat-button'), 
 	helpbutton = $('#help-button'), 
+	playbutton = $('#play-button'),
 	buttons = $('.button');
 	
 	buttons.each(function(vent, obj){
@@ -34,6 +35,18 @@ $(document).ready(function(){
 		}else {
 			$('#help').hide();
 			helpbutton.addClass('hidden');
+		}
+	});
+	playbutton.click(function(){
+		if($jo.state === 'edit'){
+			$jo.game.map = $jo.editor.map;
+			$jo.game.runSetup();
+			$jo.state = 'play';
+			console.log('go play');
+		}else if($jo.state === 'play'){
+			$jo.editor.run();
+			$jo.state = 'edit';
+			console.log('go edit');
 		}
 	});
 
