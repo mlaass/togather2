@@ -1,15 +1,25 @@
-form(action='/profile', method='POST')
+p Name: #{user.name}
+p Email: #{user.email}
+
+
+h3 change name
+form#change-name.check-form(action='/user', method='POST')
+	input(type='hidden', name='_method', value='PUT')
 	p
-		label(for='name') Name:
+		input#password(type='text', name'user[name]', value = user.name)
 	p
-		input#name(type='text', name='user[name]', value = user.name)
+		input(type='submit', value='ok')
+
+h3 change password
+form#change-password.check-form(action='/user', method='POST')
+	input(type='hidden', name='_method', value='PUT')
 	p
-		label(for='email') Email:
+		label(for='password') password:
 	p
-		input#email(type='text', name='user[email]', value= user.email)
+		input#password(type='password', name'user[password]')
 	p
-		label(for='password') Password:
+		label(for='repeatpassword') repeat password:
 	p
-		input#password(type='password', name='user[password]')
+		input#repeatpassword(type='password', name'user[repassword]')
 	p
-		input#login(type='submit', value='Submit')
+		input(type='submit', value='ok')

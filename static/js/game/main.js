@@ -31,19 +31,9 @@ define(['../jo/jo',
 		game.ts.solid = [0,1,2,3];
 		game.ts.start = 5;
 		game.ts.exit = 4;
+		
 		game.addObject('player', new Actor({name: 'player', position: new jo.Point(100, 64)}));
-		game.records = [];
-
-		
-		var s = game.map.find(game.ts.start);
-		var pl = game.getObject('player');
-		
-		if(s){
-			pl.moveTo(s.pos.plus(jo.point(16,0)));
-		}else{
-			pl.moveTo( new jo.Point(100, 64));
-		}
-		
+		game.initLevel();		
 		game.device= new jo.Animation([1,1,1], 80,42, jo.files.img.device);
 	});
 
@@ -58,13 +48,14 @@ define(['../jo/jo',
 		}
 		var p = game.cam.toWorld();
 		game.map.draw({cam: game.cam, x: p.x, y: p.y, width: jo.screen.width, height:jo.screen.height, grid: false}, new jo.Point(0,0), jo.screen);
-//		if(game.level.device ){
-//			var fr = 0;
-//			if(recording){
-//				fr = 2;
-//			}
-//			game.device.draw({frame: fr}, new jo.Point(32, 32), jo.screen);
-//		}
+		
+		if(game.device ){
+			var fr = 0;
+			if(recording){
+				fr = 2;
+			}
+			//game.device.draw({frame: fr}, new jo.Point(32, 32), jo.screen);
+		}
 		
 		if(jo.dev){
 			caption('Play Mode | FPS: '+parseInt(jo.screen.realFps)+' @ width:'+jo.screen.width+' height:'+jo.screen.height);
@@ -75,8 +66,9 @@ define(['../jo/jo',
 		game.centerCam(game.getObject('player').pos.clone());
 	};
 	game.centerCam = function(p){
-		var half = new jo.Point(jo.screen.width / 2, jo.screen.height*0.5);
+		var half = new jo.Point(jo.screen.width *0.5, jo.screen.height*0.5);
 		game.cam.copy(p.minus(half));
+		
 		var mf = this.map.getFrame();
 		
 		game.cam.copy(new jo.Point(
@@ -84,106 +76,32 @@ define(['../jo/jo',
 				Math.min(mf.height - jo.screen.height, Math.max(-64, game.cam.y))
 		));
 	};
-	game.drawEdit= function(){
-		game.map.tileSet.draw({tile: pal}, new jo.Point(jo.screen.width-96, 32), jo.screen);
-	};
-
-	game.loadLevel = function(level, init){
-		var lvl = JSON.parse(level.json, jo.Object.revive);
-		game.map = new Map(game.ts, lvl.width, lvl.height, lvl.data);
-		
-		game.objects = lvl.objects;
-		
-		game.level = level;
-		game.level.lvl = lvl;
-		if(init){
-			game.initLevel();
-		}
-
+	game.initLevel= function(){
+		game.records = [];
+		game.resetRecording();
 		
 		var s = game.map.find(game.ts.start);
-		var pl =game.getObject('player');
+		var pl = game.getObject('player');
+		
 		if(typeof s !== 'undefined'){
 			pl.moveTo(s.pos.plus(jo.point(16,0)));
 		}else{
 			pl.moveTo( new jo.Point(100, 64));
 		}
-		return game.level;
-	};
-	game.initLevel= function(){
-		game.records = [];
-		game.enemies = [];
-		game.switches = [];
-		for(var i in game.objects){
-			if(game.level.lvl.objects[i].type === 'record'){
-				game.records.push(i);
-			}else if(game.level.lvl.objects[i].type === 'enemy'){
-				game.enemies.push(i);
-			}else if(game.level.lvl.objects[i].type === 'switch'){
-				game.switches.push(i);
-			}
-		}
-		game.records = [];
-		game.resetRecording();
-	};
-	game.saveLevel = function(){
-		var lvl = {};
-		lvl.width = game.map.width;
-		lvl.height = game.map.height;
-		//
-		lvl.data = game.map.data;
-		lvl.objects = {};
-		
-		for(var i in game.objects){
-			if( !i.match(/record/)){
-				lvl.objects[i] = game.objects[i];
-			}
-		}
-		lvl.json = JSON.stringify(lvl);
-		game.records = [];
-		game.resetRecording();
-		game.loadLevel(lvl);
-		return lvl;
-		
-	};
-	game.stopLevel= function(){
-		game.loadLevel(game.level, false);
-		game.enemies = [];
-		game.switches = [];
- 
-		for(var i in game.records){
-			game.addObject('record'+i, new Clone({name: 'record'+i, position: game.records[i][0].pos.clone()}));
-		}
-		for(var i in game.objects){
-			if(game.level.lvl.objects[i].type === 'enemy'){
-				game.enemies.push(i);
-			}else if(game.level.lvl.objects[i].type === 'switch'){
-				game.switches.push(i);
-			}
-		}
-	};
-	game.restartLevel = function(){
-		game.records = [];
-		game.loadLevel(game.level);
-	};
-	game.restart = function(){
-		game.records= [];
-		game.loadLevel(levels['start'], true);
 	};
 
 	game.levelDone = function(){
-		game.loadLevel(levels[game.level.next], true);
-		jo.cookies.setCookie('LD20Balooga03',game.level.next, 60);
-		//jo.files.sfx.woo.play();
+		//game.initLevel();
+		alert('Level Done');
 	};
 	
 	var recording = false;
 	var current_rec = 0;
 	var rec_frame = 0;
+	
 	game.deleteRecords= function(){
-		game.records=[];
-		game.resetRecording();
-		
+		game.records = [];
+		game.resetRecording();		
 	};
 	game.resetRecording =function(){
 		recording = false;
@@ -191,37 +109,33 @@ define(['../jo/jo',
 		rec_frame = 0;
 	};
 	game.stopRecording= function(){
-		recording=false;
-		game.getObject('record'+current_rec).rec=false;
-		current_rec+=1;
-		game.stopLevel();
-		rec_frame=0;
-		game.getObject('player').rec=false;
+		recording = false;
+		game.getObject('record'+current_rec).rec = false;
+		current_rec += 1;
+		rec_frame = 0;
+		game.getObject('player').rec = false;
 	};
 	game.startRecording= function(){
 		recording = true;
-		game.records[current_rec]= [];
-		game.addObject('record'+current_rec, new Clone({name: 'record'+current_rec, position: game.getObject('player').pos.clone()}));
-		game.getObject('record'+current_rec).rec=true;
+		game.records[current_rec] = [];
+		
+		game.addObject('record' + current_rec, new Clone({
+			name: 'record'+current_rec, 
+			position: game.getObject('player').pos.clone()
+		}));
+		
+		game.getObject('record' + current_rec).rec = true;
 		game.getObject('player').rec=true;
 	};
 	game.OnUpdate(function(ticks){
-		game.map.update(ticks);
-		if(jo.input.once('E')){
-			jo.edit= !jo.edit;
-			game.level.device=true;
-		}
-		if(jo.edit && jo.dev){
-			this.editControls();
-			this.controls();
-		}else{			
-			this.controls();
-		}
+		game.player = game.getObject('player');
 		
+		game.map.update(ticks);
+		this.controls();
 		this.handleCollision();
 		
 		if(recording){
-			var p= game.getObject('player');
+			var p = game.player;
 			game.records[current_rec].push({pos: p.pos.clone(), fr: p.fr});			
 		}
 		if(recording || current_rec>0){
@@ -236,7 +150,9 @@ define(['../jo/jo',
 	});
 
 	game.controls = function(){
-		game.player = game.getObject('player');		
+		if(jo.input.once('E')){
+			game.device = true;
+		}		
 		if(jo.input.once('SPACE')){
 			this.player.jump();
 			$('#popup').hide();
@@ -252,11 +168,10 @@ define(['../jo/jo',
 		}else{
 			this.player.stand();
 		}
-		if(!recording && jo.input.once('SHIFT') && game.level.device){
-			
+		if(!recording && jo.input.once('SHIFT') && game.device){			
 			//jo.files.sfx.rrm.play();
 			game.startRecording();
-		}else if(recording && !jo.input.k('SHIFT') && game.level.device){
+		}else if(recording && !jo.input.k('SHIFT') && game.device){
 			//jo.files.sfx.clkclk.play();
 			game.stopRecording();
 		}
@@ -313,12 +228,7 @@ define(['../jo/jo',
 		actor.pos.x = Math.min(mf.width-actor.width,Math.max(0,actor.pos.x));
 		actor.pos.y = Math.min(mf.height,Math.max(0,actor.pos.y));
 		if(actor.pos.y > mf.height-actor.height){
-			if(recording){
-				game.stopLevel();
-			}else{
-				game.stopLevel();
-			}
-
+			game.initLevel();
 		}
 		
 		var tiles = game.tiles = map.getIntersection({x:actor.pos.x, y: actor.pos.y, width: actor.width, height: actor.height});

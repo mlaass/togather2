@@ -97,4 +97,6 @@ Grid.prototype.resize= function(width, height, clear){
 	}
 	this.blit(copy,0,0);
 };
-
+Grid.prototype.rename = function(name){
+	this.name = name;
+};

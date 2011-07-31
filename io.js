@@ -87,33 +87,38 @@ activateProtocol = function(io, client, fn){
 			
 			//syncing
 			client.on(client.channel, function(msg){
-				msg.user = client.user._id;
-				redisclient.publish(client.channel, JSON.stringify(msg));
-				
+				msg.user = client.user._id;	
+			
 				if(msg.type === 'function' && msg.name){
-					levels.load(level._id, function(err, level){
-						var grid = new Grid({
-							width: level.width,
-							height: level.height,
-							name: level.name,
-							data: level.data
-						});						
-						var args = [];
-						for(var i in msg.args){
-							args[i] = msg.args[i];
-						}
-						grid[msg.name].apply(grid, args);
-						level.lastUpdate= Date.now();
-						level.name = grid.name;
-						level.width = grid.width;
-						level.height = grid.height;
-						level.data = JSON.stringify(grid.data);
-						level.save(function(err){
-							if(err){
-								console.log(err);
+					if(msg.context === 'grid'){
+						levels.load(level._id, function(err, level){
+							var grid = new Grid({
+								width: level.width,
+								height: level.height,
+								name: level.name,
+								data: level.data
+							});						
+							var args = [];
+							for(var i in msg.args){
+								args[i] = msg.args[i];
 							}
+							grid[msg.name].apply(grid, args);
+							level.lastUpdate= Date.now();
+							level.name = grid.name;
+							level.width = grid.width;
+							level.height = grid.height;
+							level.data = JSON.stringify(grid.data);
+							level.save(function(err){
+								if(err){
+									console.log(err);
+								}
+							});
 						});
-					});					
+					}else if(msg.context === 'chat'){
+						msg.args[0].time = Date.now();
+						msg.args[0].username = client.user.name;
+					}
+					redisclient.publish(client.channel, JSON.stringify(msg));
 				}		
 			});
 			fn(level);

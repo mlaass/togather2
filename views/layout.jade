@@ -7,12 +7,23 @@ html
     link(href='http://fonts.googleapis.com/css?family=Leckerli+One&v2', rel='stylesheet', type='text/css')
     link(href='http://fonts.googleapis.com/css?family=Delius', rel='stylesheet', type='text/css')
   body
-    a(href='/')#head!=title
+    #head
+      a#title(href='/')!=title
+      -if(user)
+        p#user
+          a(href='/profile') profile           
+          a(href='/logout') logout 
     - if(flash.warn)
       #warn.flash= flash.warn
+    - if(flash.info)
+      #info.flash= flash.info
+    - if(flash.error)
+      #error.flash= flash.error
+    
+
     #container!=body
-  //- script(type='text/javascript', src= 'https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
-  script(type='text/javascript', src= 'js/jquery.js')
-  script(type='text/javascript', src= 'js/plugins/jquery.form.js')
-  script(type='text/javascript', src= 'js/util.js')
+  //- script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
+  script(type='text/javascript', src='/js/jquery.js')
+  script(type='text/javascript', src='/js/plugins/jquery.form.js')
+  script(type='text/javascript', src='/js/page.js')
   script!=googleAnalytics

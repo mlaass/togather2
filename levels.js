@@ -1,6 +1,7 @@
 var mongoose = require('mongoose'),
 	crypto = require('crypto'),
-	redis = require('redis');
+	redis = require('redis'),
+	users = require('./users');
 
 var Schema = mongoose.Schema,
 	LevelSchema, 
@@ -85,14 +86,18 @@ LevelSchema = new Schema({
 	  'date': {type: Date, 'default': Date.now},
 	  'lastUpdate': {type: Date, 'default': Date.now},
 	  'creator': {type: Schema.ObjectId},
+	  'creatorName': {type: String, 'default': 'anonymous'},
 	  'width': {type: Number, 'default': 16},
 	  'height': {type: Number, 'default': 16},
 	  'data': {type: String, 'default': initData()}
 });
-
+LevelSchema.pre('save', function(next) {
+	console.log(this.creator);
+	next();
+});
 
 mongoose.model('Level', LevelSchema);
-Level = mongoose.model('Level');
+module.exports.Level = Level = mongoose.model('Level');
 
 module.exports.load = function(id, fn){
 	Level.findById( id, function(err, lvl){
@@ -104,14 +109,27 @@ module.exports.load = function(id, fn){
 	});	
 };
 
-module.exports.create = function( fn){
-	var lvl = new Level();
-	lvl.save(function(err){
+module.exports.create = function(userId, fn){
+	users.User.findOne({_id: userId}, function(err, user){
 		if(err){
 			console.log(err);
+			fn(err, null);
 		}
-		fn(err, lvl);
+		console.log(user.name + ' created a level');
+		var level = new Level();
+		level.creator = user._id;
+		level.creatorName = user.name;
+		
+		
+		level.save(function(err){
+			if(err){
+				console.log(err);
+			}
+			console.log(user.name + ' created the level: '+ level.name);
+			fn(err, level);
+		});
 	});
+
 };
 module.exports.update = function(lvl){
 	lvl.lastUpdate = Date.now();

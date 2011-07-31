@@ -64,7 +64,7 @@ UserSchema.virtual('password').set(function(password) {
 });
 
 mongoose.model('User', UserSchema);
-User = mongoose.model('User');
+module.exports.User = User = mongoose.model('User');
 
 PendingSchema = new Schema({
 	'hash': {type: String, 'default': encrypt(makeSalt(), 'well this is fun'), index: {unique: true}},

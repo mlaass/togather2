@@ -1,5 +1,5 @@
-require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 'sidebar','game/main'], 
-		function(jo, Game, Camera, Animation, Level, ioclient, sidebar, game){	
+require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 'sidebar', 'chat','game/main'], 
+		function(jo, Game, Camera, Animation, Level, ioclient, sidebar, Chat, game){	
 	//one global variable to rule them all very useful with the browser console
 	$jo=jo;
 
@@ -12,7 +12,7 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 		           'img/tileset.png'], '/');	
 		
 		editor.cam = new jo.Camera(0,0);
-
+		editor.chat = new Chat();
 		editor.sb = sidebar;		
 	});
 
@@ -34,9 +34,14 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 				}				
 				editor.map.tileSet = editor.ts;
 				
-				ioclient.sync('resize', editor.map);
-				ioclient.sync('put', editor.map);
-				ioclient.sync('shift', editor.map);
+				ioclient.sync('resize', editor.map, 'grid');
+				ioclient.sync('put', editor.map, 'grid');
+				ioclient.sync('shift', editor.map, 'grid');
+				ioclient.sync('rename', editor.map, 'grid');
+				
+				ioclient.sync('post', editor.chat, 'chat', true);
+				
+				
 				$('#loading').hide();
 			}
 		});		

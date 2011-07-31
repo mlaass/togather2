@@ -1,0 +1,8 @@
+h2 Hi #{user.name}
+p
+	a(href='/level/list') all Levels
+p
+	a#create-level(href='/level/create') Create new Level
+
+h2 Your levels:
+ul#level-list!=partial('levellist')

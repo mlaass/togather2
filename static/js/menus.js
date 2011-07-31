@@ -2,7 +2,8 @@ $(document).ready(function(){
 	settings = $('#tools #settings'),
 	chatbutton = $('#chat-button'), 
 	helpbutton = $('#help-button'), 
-	playbutton = $('#play-button'),
+	playbutton = $('#play-button'), 
+	editbutton = $('#edit-button'),
 	buttons = $('.button');
 	
 	buttons.each(function(vent, obj){
@@ -17,6 +18,9 @@ $(document).ready(function(){
 		o.append('<img src="/img/empty.png" width="32" height="32" alt="'+$(obj).attr('id')+'"/>').append(p);
 		p = o.find('span');
 		p.css({left: 8-(p.width()/2)});
+		if(txt =='edit'){
+			editbutton.hide();
+		}
 		
 	});
 	chatbutton.click(function(){
@@ -43,10 +47,19 @@ $(document).ready(function(){
 			$jo.game.runSetup();
 			$jo.state = 'play';
 			console.log('go play');
-		}else if($jo.state === 'play'){
+			playbutton.hide();
+			editbutton.show();
+			$('#sidebar').fadeOut();
+		}
+	});
+	editbutton.click(function(){
+		if($jo.state === 'play'){
 			$jo.editor.run();
 			$jo.state = 'edit';
 			console.log('go edit');
+			editbutton.hide();
+			playbutton.show();	
+			$('#sidebar').fadeIn();
 		}
 	});
 

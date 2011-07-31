@@ -6,6 +6,21 @@ body{
 	padding: 0;
 	margin: 0;
 }
+h1,h2,h3,h4,h5,h6{
+	color: #fe7b2b;
+	font-family: 'Leckerli One', Arial, Helvetica, Serif;
+	__text-shadow: #69aedb 1px 1px 0px;
+	font-weight: normal;
+}
+a{
+	color: #fe7b2b;
+	text-decoration: none;
+	text-shadow: #69aedb 1px 1px 0;
+}
+a:hover{
+	color: #fe7b2b;
+	text-shadow: none;
+}
 #container, #head, .flash{
 	width: 928px;
 	margin: 0 auto;
@@ -18,38 +33,61 @@ body{
 		margin: 8px auto;
 		background: #fefecc;
 }
-#container{
-	margin-bottom: 148px;
-	font-family: 'Delius', Arial, Helvetica, Serif; 
-}
-a{
-	color: #fe7b2b;
-	text-decoration: none;
-	text-shadow: #69aedb 1px 1px 0;
-}
-a:hover{
-	color: #fe7b2b;
-	text-shadow: none;
-}
 #head{
 	background: url('/img/jomoho_profile_64.png') transparent no-repeat;
 	background-position: 4px 10px;
 	height: 64px;
 	text-indent: 64px;
+	position: relative;
+}
+#head #title{
 	text-decoration: none;
 	color: #fe7b2b;
 	text-shadow: #69aedb 2px 2px 0;
 	font-size: 32px;
 	font-family: 'Leckerli One', Arial, Helvetica, Serif; 
 }
+#user{
+	position: absolute;
+	top: 64px;
+	right: 16px;
+	font-size: 18px;
+	font-weight: bold;
+}
+#container{
+	margin-bottom: 148px;
+	font-family: 'Delius', Arial, Helvetica, Serif; 
+}
 #create-level{
 	font-size: 18;
 	font-weight: bold;
+}
+#level-list{
+
+}
+#level-list li{
+	list-style: none;
+}
+#level-list li.head{
+	background: rgba(64,64,64, 0.3);
+	color: #646464;
+	font-weight: bold;
+	margin-bottom: 8px;
+}
+#level-list li .row{
+	width: 168px;
+	padding: 8px 16px;
+	display: inline-block;
+}
+#level-list li .row.last{
+	width: 96px;
+	display: inline-block;
 }
 #canvas{
 	position:absolute;
 }
 #chat, #help{
+	font-family: arial, sans;
 	position: absolute;
 	z-index:2;
 	top: 0;
@@ -63,7 +101,7 @@ a:hover{
 	margin-top: 96px;
 }
 #chat-text{
-	font-size: 10px;
+	font-size: 12px;
 }
 #chat-text.time, #chat-text.name{
 	
@@ -84,12 +122,6 @@ a:hover{
 	font-size: 11px;
 }
 
-#chat-button img{
-	background-position: -160px 0;
-}
-#chat-button.hidden img{
-	background-position: -192px 0;
-}
 #menu{
 	position: absolute;
 	top: 16px;
@@ -169,6 +201,33 @@ a:hover{
 	-moz-border-radius: 16px;
 	-webkit-border-radius: 16px;
 }
+#info-button img{
+	background-position: 0 0;
+}
+#sound-button img{
+	background-position: -32px 0;
+}
+#sound-button.mute img{
+	background-position: -64px 0;
+}
+#music-button img{
+	background-position: -96px 0;
+}
+#music-button.mute img{
+	background-position: -128px 0;
+}
+#chat-button img{
+	background-position: -160px 0;
+}
+#chat-button.hidden img{
+	background-position: -192px 0;
+}
+#edit-button img{
+	background-position: -224px 0;
+}
+#tools #drag img{
+	background-position: 0 -32px;
+}
 #tools #pick img{
 	background-position: -32px -32px;
 }
@@ -178,6 +237,22 @@ a:hover{
 #tools #settings img{
 	background-position: -96px -32px;
 }
+#help-button img{
+	background-position: -224px 0px;
+}
+#home-button img{
+	background-position: -128px -32px;
+}
+#play-button img{
+	background-position: -160px -32px;
+}
+#profile-button img{
+	background-position: -192px -32px;
+}
+#help-button img{
+	background-position: -224px -32px;
+}
+
 #sidebar{
 	position: absolute;
 	right: 0;

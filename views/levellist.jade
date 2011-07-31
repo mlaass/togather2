@@ -1,0 +1,20 @@
+li.head
+	.row name
+	.row last update
+	.row creator
+	.row created
+	.row.last action
+- for(lvl in levels)
+	li
+		a.row(href='/level/'+levels[lvl]._id+'/edit')=levels[lvl].name
+		.row.date=levels[lvl].prettyupdate
+		.row.creator=levels[lvl].creatorName
+		.row.date=levels[lvl].prettydate
+		.row.last.tools
+			-if(levels[lvl].owner)
+				form.confirm(action='/level/'+levels[lvl]._id, method='POST')
+					input(type='hidden', name='_method', value='DELETE')
+					input(type='hidden', name='origin', value=origin)
+					input(type='submit', value='remove')
+			form.confirm(action='/level/'+levels[lvl]._id+'/copy', method='get')
+				input(type='submit', value='clone')

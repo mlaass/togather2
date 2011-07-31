@@ -21,8 +21,7 @@ define(['jo/jo'], function(jo){
         			$('.tool-prop').each(function(ev, obj){
         				$(obj).hide();
         			}); 
-        			$('#'+$jo.tool+'-prop').show();         			       			
-        			
+        			$('#'+$jo.tool+'-prop').show();	
         		});
         	});
 			
@@ -35,8 +34,8 @@ define(['jo/jo'], function(jo){
 			});
 			//entity select
 			var eselect = $('#add-entity select');
-			for(var i in jo.editor.entitylist){
-				eselect.append($('<option>').html(jo.editor.entitylist[i]));
+			for(var i in jo.entities){
+				eselect.append($('<option>').html(jo.entities[i].name));
 			}
 			
 			//tiles
@@ -78,13 +77,16 @@ define(['jo/jo'], function(jo){
 		},
 		actions:{
 			addEntitySubmit: function(form){
-				var ent =form.find('select').val();
+				var ent = form.find('select').val();
 				alert(ent);
 			},
 			mapSettingsSubmit: function(form){
-				var w = $('#width').val(), h = $('#height').val();
+				var w = $('#width').val(), 
+				h = $('#height').val(),
+				name = $('#name').val();
         		w = parseInt(w, 10), h = parseInt(h, 10);
-        		$jo.editor.map.resize(w,h, {index: -1});
+        		$jo.editor.map.resize(w,h, {index: -1});        	
+        		$jo.editor.map.rename(name);       		
 			}
 		},
 		tools:{
