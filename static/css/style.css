@@ -272,6 +272,9 @@ a:hover{
 	padding: 0;
 	min-height: 96px;	
 }
+#sidebar h2{
+	color: black;
+}
 ul{
 	margin: 0;
 	padding: 0;

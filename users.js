@@ -47,9 +47,12 @@ UserSchema.method('encryptPassword', function(password) {
 	return crypto.createHmac('sha1', this.salt).update(password).digest('hex');
 });
 
-UserSchema.pre('save', function(next) {
-	if (this.password && this.password.length > 4) {
+UserSchema.pre('save', function(next) {	
+	if (this.password && this.password.length > 4 && this.password === this.repassword) {
 		next();
+	} 
+	else if(this.password !== this.repassword){		
+		next(new Error('confirmation password does not match'));
 	} else {		
 		next(new Error('Invalid password, needs at least 5 characters'));
 	}

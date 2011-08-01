@@ -7,6 +7,7 @@ var Schema = mongoose.Schema,
 	LevelSchema, 
 	Level,
 	TileSchema;
+
 function createName(minlength, maxlength, prefix, suffix) {
 	var rnd = function(minv, maxv){
 		if (maxv < minv)
@@ -172,6 +173,116 @@ module.exports.getNumFrom = function(num, from, fn){
 		}
 	});
 };
+//module.exports.callFn = function(id, name, args){
+//	mongoose.connection.db.eval('grid:call({name:'+name+'id:'+id+', args:'+JSON.stringify(args)+'}', function(err){
+//		
+//	});
+//};
+//
+//mongoose.connection.db.collection('system.js', function(err, js){
+//	var db = mongoose.connection.db;
+//	
+//	var gridput = function(grid, x, y, val){
+//		grid.data[x + grid.width*y] = val;
+//		return grid;
+//	},gridget = function(grid, x, y){
+//		return grid.data[x + grid.width*y];		
+//	},
+//	gridblit = function(src, tgt, x, y, w, h){
+//		w = Math.min(w, tgt.width-x);
+//		h = Math.min(h, tgt.height-y);
+//		for(var i = 0; i < h; i++){
+//			for(var j = 0; j < w; j++){
+//				gridput(tgt, x+j, y+i, gridget(j,i));
+//			}
+//		}
+//		return tgt;
+//	},
+//	gridcopy = function(grid){
+//		var copy = {
+//				width: width,
+//				height: height,
+//				data: []
+//			};
+//		for(var i=0; i< grid.data.length; i++){
+//			copy.data.push(grid.data[i]);
+//		}
+//		return copy;
+//	},
+//	gridclear = function(grid){
+//		grid.data=[];
+//		for(var i=0; i< grid.data.length; i++){
+//			grid.data.push(empty);
+//		}
+//		return grid;
+//	},
+//	newgrid = function(width, height, empty){
+//		var grid = {
+//			width: width,
+//			height: height,
+//			data: []
+//		};
+//		for(var i=0; i< width*height; i++){
+//			grid.data.push(empty);
+//		}
+//		return grid;
+//	},
+//	gridshift = function(grid, x, y, empty){
+//		var copy = gridcopy(grid);	
+//		grid = cleargrid(grid, empty);
+//		return blit(copy, grid, x, y);
+//	},
+//	gridresize = function(grid, width, height, clear){
+//		var copy = gridcopy(grid);
+//		grid.width= width;
+//		grid.height = height;
+//		grid.data=[];
+//		for( var i = 0; i < width * height; i++) {
+//			grid.data.push(clear);
+//		}
+//		gridblit(copy, grid,0,0, copy.width, copy.height);
+//		return grid;
+//	},
+//	gridrename= function(grid, name){
+//		grid.name = name;
+//		return grid;
+//	};
+//	js.insert({_id: 'gridput', value : gridput.toString()});
+//	js.insert({_id: 'gridget', value : gridget.toString()});
+//	js.insert({_id: 'gridblit', value : gridblit.toString()});
+//	js.insert({_id: 'gridcopy', value : gridcopy.toString()});
+//	js.insert({_id: 'gridclear', value : gridclear.toString()});
+//	js.insert({_id: 'newgrid', value : newgrid.toString()});
+//	js.insert({_id: 'gridshift', value : gridshift.toString()});
+//	js.insert({_id: 'gridresize', value : gridresize.toString()});
+//	js.insert({_id: 'gridrename', value : gridrename.toString()});
+//
+//	gridcall = function(cmd){
+//		var g = db.levels.findOne({'_id': cmd.id});
+//		g.data = JSON.parse(grid.data);
+//		cmd.args.splice(0,0,g);
+//		
+//		g = grid[cmd.id].apply();
+//		
+//		g.data = JSON.stringify(dat);
+//		db.levels.save(g);
+//	}, gridinit = function(){
+//		grid=[];
+//		grid['put'] = gridput;
+//		grid['rename'] = gridrename;
+//		grid['resize'] = gridresize;
+//		grid['shift'] = gridshift;	
+//		return 'grid initalized in mongodb!';
+//	};	
+//	js.insert({_id: 'gridcall', value : gridcall.toString()});
+//	js.insert({_id: 'gridinit', value : gridinit.toString()}, function(){
+//		db.eval('gridinit();', function(err, ret){
+//			console.log(err);
+//			console.log(ret);
+//		});
+//	});
+//
+//});
 
 if(process.env.NODE_ENV !== 'production'){
 	mongoose.connect('mongodb://localhost:27017/togatherdev');

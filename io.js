@@ -4,7 +4,7 @@ var redis = require('redis'),
     levels = require('./levels'),
     Grid = require('./grid').Grid;
 
-
+var rooms = {};
 redisclient.on('error', function (err) {
     console.log('Error ' + err);
 });
@@ -55,7 +55,7 @@ module.exports.listen = function(io){
 	});
 };
 activateProtocol = function(io, client, fn){
-	client.channel = 'lvl:'+client.levelId;
+	var channel = client.channel = 'lvl:'+client.levelId;
 	
 	//using step for async easing
 	Step(
@@ -63,6 +63,19 @@ activateProtocol = function(io, client, fn){
 			levels.load(client.levelId, this);
 		},
 		function(err, level){
+			if(!rooms[channel]){
+				rooms[channel]={
+						grid: new Grid({
+							width: level.width,
+							height: level.height,
+							name: level.name,
+							data: level.data}),
+						users: 1
+					};
+				client.grid=rooms[channel].grid;
+			}else{
+				rooms[channel].users++;
+			}
 			if(err){
 				fn(err);
 				return;
@@ -83,6 +96,12 @@ activateProtocol = function(io, client, fn){
 			//disconnection
 			client.on('disconnect', function(){
 				redisclient.publish(client.channel, JSON.stringify({disconnect: true, user: {id: client.user._id}}));
+				
+				rooms[channel].users--;
+				if(rooms[channel].users===0){
+					console.log('closing: '+ channel);
+					delete rooms[channel];
+				}
 			});
 			
 			//syncing
@@ -91,28 +110,23 @@ activateProtocol = function(io, client, fn){
 			
 				if(msg.type === 'function' && msg.name){
 					if(msg.context === 'grid'){
-						levels.load(level._id, function(err, level){
-							var grid = new Grid({
-								width: level.width,
-								height: level.height,
-								name: level.name,
-								data: level.data
-							});						
-							var args = [];
-							for(var i in msg.args){
-								args[i] = msg.args[i];
+						var args = [];
+						for(var i in msg.args){
+							args[i] = msg.args[i];
+						}
+						var grid = rooms[channel].grid;
+						
+						grid[msg.name].apply(grid, args);
+						
+						level.lastUpdate= Date.now();
+						level.name = grid.name;
+						level.width = grid.width;
+						level.height = grid.height;
+						level.data = JSON.stringify(grid.data);
+						level.save(function(err){
+							if(err){
+								console.log(err);
 							}
-							grid[msg.name].apply(grid, args);
-							level.lastUpdate= Date.now();
-							level.name = grid.name;
-							level.width = grid.width;
-							level.height = grid.height;
-							level.data = JSON.stringify(grid.data);
-							level.save(function(err){
-								if(err){
-									console.log(err);
-								}
-							});
 						});
 					}else if(msg.context === 'chat'){
 						msg.args[0].time = Date.now();
