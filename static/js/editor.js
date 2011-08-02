@@ -36,7 +36,7 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 				
 				ioclient.sync('resize', editor.map, 'grid');
 				ioclient.sync('put', editor.map, 'grid');
-				ioclient.sync('shift', editor.map, 'grid');
+				ioclient.sync('shift', editor.map, 'grid', true);
 				ioclient.sync('rename', editor.map, 'grid');
 				
 				ioclient.sync('post', editor.chat, 'chat', true);

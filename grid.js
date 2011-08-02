@@ -36,6 +36,7 @@ Grid.prototype.blit = function(grid, x, y, width, height) {
 
 	width = Math.min(width, this.width - x);
 	height = Math.min(height, this.height - y);
+	
 	for (var i = 0; i < height; i++) {
 		for (var j = 0; j < width; j++) {
 			this.put(x+j, y+i, grid.get(j,i));
