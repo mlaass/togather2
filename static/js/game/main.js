@@ -15,23 +15,18 @@ define(['../jo/jo',
 		           'img/player_record.png',
 		           'img/player_shadow.png',
 		           'img/device.png',
-		           'img/tileset.png'], '/js/game/');		
+		           'img/tileset.png'], '/js/game/');
 	}, true);
 
 	game.ready(function(){
-//		if(jo.dev){
-//			jo.files.mute();
-//		}
-		
 		game.state = 'start';
 		game.cam = new jo.Camera();
 		
-		//game.ts = new jo.TileSet({tiles:[0,1,2,3, [{i:4, t:800},{i:5, t: 600}], 6],width: 64, height:64,sprite: jo.files.img.tileset});
 		game.ts={};
 		game.ts.solid = [0,1,2,3];
 		game.ts.start = 5;
 		game.ts.exit = 4;
-		
+		game.removeAllObjects();
 		game.addObject('player', new Actor({name: 'player', position: new jo.Point(100, 64)}));
 		game.initLevel();		
 		game.device= new jo.Animation([1,1,1], 80,42, jo.files.img.device);
@@ -92,7 +87,7 @@ define(['../jo/jo',
 
 	game.levelDone = function(){
 		//game.initLevel();
-		alert('Level Done');
+		//alert('Level Done');
 	};
 	
 	var recording = false;

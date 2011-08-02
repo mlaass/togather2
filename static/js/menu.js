@@ -4,7 +4,10 @@ $(document).ready(function(){
 	helpbutton = $('#help-button'), 
 	playbutton = $('#play-button'), 
 	editbutton = $('#edit-button'),
+	reloadbutton = $('#reload-button'),
 	buttons = $('.button');
+	
+
 	
 	buttons.each(function(vent, obj){
 		var o = $(obj), txt= o.attr('name');
@@ -18,11 +21,14 @@ $(document).ready(function(){
 		o.append('<img src="/img/empty.png" width="32" height="32" alt="'+$(obj).attr('id')+'"/>').append(p);
 		p = o.find('span');
 		p.css({left: 8-(p.width()/2)});
-		if(txt =='edit'){
-			editbutton.hide();
-		}
+
 		
 	});
+	reloadbutton.hide();
+	editbutton.hide();
+	$('#menu').hide();
+	
+	
 	chatbutton.click(function(){
 		if(chatbutton.hasClass('hidden')){
 			$('#chat').show();
@@ -44,11 +50,20 @@ $(document).ready(function(){
 	playbutton.click(function(){
 		if($jo.state === 'edit'){
 			$jo.game.map = $jo.editor.map;
-			$jo.game.runSetup();
+			if(!$jo.game.getObject('player')){
+				$jo.game.runReady();
+			}else{
+				$jo.game.run();
+			}
+			
 			$jo.state = 'play';
 			console.log('go play');
+			
 			playbutton.hide();
+			
 			editbutton.show();
+			reloadbutton.show();
+			
 			$('#sidebar').fadeOut();
 		}
 	});
@@ -57,9 +72,17 @@ $(document).ready(function(){
 			$jo.editor.run();
 			$jo.state = 'edit';
 			console.log('go edit');
+			
 			editbutton.hide();
+			reloadbutton.hide();
+			
 			playbutton.show();	
 			$('#sidebar').fadeIn();
+		}
+	});
+	reloadbutton.click(function(){
+		if($jo.state === 'play'){
+			$jo.game.runReady();
 		}
 	});
 

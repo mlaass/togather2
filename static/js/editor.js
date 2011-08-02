@@ -7,6 +7,7 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 	var editor = jo.editor = new Game({ name: '#canvas', fullscreen: true, fps: 30});
 	editor.setup(function(){
 		//preloading of the files we need
+		game.runSetup();
 		editor.load(['img/logo.png',
 		           'img/player.png',
 		           'img/tileset.png'], '/');	
@@ -39,10 +40,10 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 				ioclient.sync('shift', editor.map, 'grid', true);
 				ioclient.sync('rename', editor.map, 'grid');
 				
-				ioclient.sync('post', editor.chat, 'chat', true);
-				
+				ioclient.sync('post', editor.chat, 'chat', true);				
 				
 				$('#loading').hide();
+				$('#menu').fadeIn();
 			}
 		});		
 				

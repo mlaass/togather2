@@ -237,9 +237,6 @@ a:hover{
 #tools #settings img{
 	background-position: -96px -32px;
 }
-#help-button img{
-	background-position: -224px 0px;
-}
 #home-button img{
 	background-position: -128px -32px;
 }
@@ -251,6 +248,15 @@ a:hover{
 }
 #help-button img{
 	background-position: -224px -32px;
+}
+#new-button img{
+	background-position: 0 -64px;
+}
+#reload-button img{
+	background-position: -32px -64px;
+}
+#list-button img{
+	background-position: -64px -64px;
 }
 
 #sidebar{
