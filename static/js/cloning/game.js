@@ -8,14 +8,16 @@ define(['../jo/jo',
 		function(jo, Game, Map, m2d, Actor, Clone){
 	
 	var game = new Game({ name: '#canvas', fullscreen: true, fps: 30});
-
+	game.entities = [{type: 'player', name:'player', create: Actor }];
+	
 	game.setup(function(){
 		game.load(['img/test.png', 
 		           'img/player.png',
 		           'img/player_record.png',
 		           'img/player_shadow.png',
 		           'img/device.png',
-		           'img/tileset.png'], '/js/game/');
+		           'img/tileset.png',
+		           	], '/js/cloning/');
 	}, true);
 
 	game.ready(function(){
@@ -26,10 +28,12 @@ define(['../jo/jo',
 		game.ts.solid = [0,1,2,3];
 		game.ts.start = 5;
 		game.ts.exit = 4;
+		
 		game.removeAllObjects();
 		game.addObject('player', new Actor({name: 'player', position: new jo.Point(100, 64)}));
 		game.initLevel();		
 		game.device= new jo.Animation([1,1,1], 80,42, jo.files.img.device);
+		game.player = game.getObject('player');
 	});
 
 	
@@ -74,7 +78,10 @@ define(['../jo/jo',
 	game.initLevel= function(){
 		game.records = [];
 		game.resetRecording();
-		
+		game.moveToStart();
+
+	};
+	game.moveToStart = function(){
 		var s = game.map.find(game.ts.start);
 		var pl = game.getObject('player');
 		
@@ -104,11 +111,11 @@ define(['../jo/jo',
 		rec_frame = 0;
 	};
 	game.stopRecording= function(){
-		recording = false;
+		game.player.rec = false;
 		game.getObject('record'+current_rec).rec = false;
+		recording = false;		
 		current_rec += 1;
 		rec_frame = 0;
-		game.getObject('player').rec = false;
 	};
 	game.startRecording= function(){
 		recording = true;
@@ -116,11 +123,11 @@ define(['../jo/jo',
 		
 		game.addObject('record' + current_rec, new Clone({
 			name: 'record'+current_rec, 
-			position: game.getObject('player').pos.clone()
+			position: game.player.pos.clone()
 		}));
 		
 		game.getObject('record' + current_rec).rec = true;
-		game.getObject('player').rec=true;
+		game.player.rec = true;
 	};
 	game.OnUpdate(function(ticks){
 		game.player = game.getObject('player');
@@ -138,10 +145,9 @@ define(['../jo/jo',
 		}
 		for(var i in game.records){
 			var f = Math.min(game.records[i].length-1, rec_frame);
-			game.objects['record'+i].pos = game.records[i][f].pos;
-			game.objects['record'+i].fr = game.records[i][f].fr;
-		}
-			
+			game.obj['record'+i].pos = game.records[i][f].pos;
+			game.obj['record'+i].fr = game.records[i][f].fr;
+		}			
 	});
 
 	game.controls = function(){
@@ -169,6 +175,7 @@ define(['../jo/jo',
 		}else if(recording && !jo.input.k('SHIFT') && game.device){
 			//jo.files.sfx.clkclk.play();
 			game.stopRecording();
+			game.moveToStart();
 		}
 	};
 	game.handleCollision = function(){	
@@ -177,7 +184,7 @@ define(['../jo/jo',
 		for(i in this.enemy){
 			this.mapCollide(game.map, game.getObject(enemy[i]));
 		}
-		var others= [];
+		var others = [];
 		for(i in this.records){
 			if(i != current_rec){
 				others.push(game.getObject('record'+i));
@@ -223,7 +230,7 @@ define(['../jo/jo',
 		actor.pos.x = Math.min(mf.width-actor.width,Math.max(0,actor.pos.x));
 		actor.pos.y = Math.min(mf.height,Math.max(0,actor.pos.y));
 		if(actor.pos.y > mf.height-actor.height){
-			game.initLevel();
+			game.moveToStart();
 		}
 		
 		var tiles = game.tiles = map.getIntersection({x:actor.pos.x, y: actor.pos.y, width: actor.width, height: actor.height});

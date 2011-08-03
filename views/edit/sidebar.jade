@@ -4,10 +4,10 @@ li.panel(name='tools')
 		#saved(style='display:none;') saved   
 	h2 tools
 	ul#tools
-		li#drag.button
-		li#pick.button(name='pick')
-		li#tile.button.active   
-		li#settings.button(name='set')
+		li#drag.button.fixed
+		li#pick.button.fixed(name='pick')
+		li#tile.button.fixed.active   
+		li#settings.button.fixed(name='set')
 
 li#toolprops.panel
 	h2 tool properties    	
@@ -35,3 +35,5 @@ li#toolprops.panel
 li#inspector.panel(name='inspector')
 	h2 inspector
 	ul#properties
+	form#commitInspector(action='commitInspector')
+		input(type='submit', value ='commit changes')

@@ -17,11 +17,11 @@ define(['../../jo/jo', '../../jo/Object'], function(jo, Object){
 			this.rec_anim= new jo.Animation([1,1,1,1,1,1], 48, 48, jo.files.img.player_record);
 			
 			if(this.name==='player'){
-				this.anim= new jo.Animation([1,1,1,1,1,1], 48, 48, jo.files.img.player);				
+				this.anim = new jo.Animation([1,1,1,1,1,1], 48, 48, jo.files.img.player);				
 			}else{
-				this.anim= new jo.Animation([1,1,1,1,1,1], 48, 48, jo.files.img.player_shadow);
-
+				this.anim = new jo.Animation([1,1,1,1,1,1], 48, 48, jo.files.img.player_shadow);
 			}
+			console.log(this.anim);
 			
 		},
 		draw: function(opt, pos, srf){
@@ -30,29 +30,30 @@ define(['../../jo/jo', '../../jo/Object'], function(jo, Object){
 
 			var sp = p.minus(new jo.Point(5,11));
 			var v = this.v();
+			
+
 			if(this.name==='player'){
-				this.fr= 0;
+				this.fr = 0;
 				if(!this.ground)
-					this.fr=1;
+					this.fr = 1;
 				if(v.x>0.1){
-					this.fr=2;
+					this.fr = 2;
 					if(!this.ground)
-						this.fr=4;
+						this.fr = 4;
 				}else if(v.x<-0.1){
-					this.fr=3;
+					this.fr = 3;
 					if(!this.ground)
-						this.fr=5;
+						this.fr = 5;
 				}
 			}
-			
-			this.anim.frame = this.fr;
 			if(this.rec){
 				this.rec_anim.frame = this.fr;
-				//this.rec_anim.draw({frame: this.fr},sp, jo.screen);
+				this.rec_anim.draw({}, sp, srf);
 			}else{
-				//this.anim.draw({} ,p, srf);
+				this.anim.frame = this.fr;
+				this.anim.draw({},sp, srf);
 			}
-			if(jo.dev ||true){
+			if(jo.dev ){
 				srf.rect({fill:this.ground?'rgba(0,255,0,0.5)':'rgba(255,0,255,0.5)', stroke: 'white'}, p, this.width, this.height);
 				srf.text({fill:'#999', align: 'left', baseline: 'bottom', font:'12px console', stroke: 0}, p, this.name);
 			}
@@ -71,9 +72,7 @@ define(['../../jo/jo', '../../jo/Object'], function(jo, Object){
 				this.pos.x += (this.pos.x-this.lp.x)*0.5;
 			}
 			
-			this.lp = pp;
-			
-			
+			this.lp = pp;	
 		},
 		v: function(){
 			return this.pos.minus(this.lp);

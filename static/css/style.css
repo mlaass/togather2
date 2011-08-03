@@ -187,6 +187,8 @@ a:hover{
 	height: 32px;
 	display: block;
 	background: url(../img/icons.png) 0 -32px;
+	
+	position: relative;
 }
 #tools span, .button span{
 	position: relative;
@@ -284,6 +286,10 @@ a:hover{
 ul{
 	margin: 0;
 	padding: 0;
+	list-style: none;
+}
+#inspector ul{
+	margin-left: 8px;
 }
 #sidebar h2{
 	margin: 0 0 8px 0;
@@ -296,13 +302,18 @@ ul{
 	padding: 0 4px;
 }
 .pair label, .pair input.name{
-	width: 80px;
+	width: 64px;
 	display: inline-block;
 }
 .pair input{
-	width: 120px;
+	width: 100px;
 	margin-left: 4px;
 	display: inline-block;	
+}
+form#commitInspector{
+	position: absolute;
+	bottom: 0;
+	right: 0;
 }
 #tile-select{
 	max-height: 256px;

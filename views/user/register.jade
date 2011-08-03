@@ -1,5 +1,23 @@
-form(action='/register', method='POST')!=partial('user-form')
-p
+form(action='/register', method='POST')
+	p
+		label(for='name') Name:
+	p
+		input#name(type='text', name='user[name]')
+	p
+		label(for='email') Email:
+	p
+		input#email(type='text', name='user[email]')
+	p
+		label(for='password') Password:
+	p
+		input#password(type='password', name='user[password]')
+	p
+		label(for='repassword') Repeat Password:
+	p
+		input#repassword(type='password', name='user[repassword]')
+	p
+		input#login(type='submit', value='Submit')
+
 p
 	a(href='/register') Register
 	,

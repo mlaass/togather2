@@ -1,5 +1,7 @@
-require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 'sidebar', 'chat','game/main'], 
-		function(jo, Game, Camera, Animation, Level, ioclient, sidebar, Chat, game){	
+
+
+require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 'chat','cloning/game', 'sidebar'], 
+		function(jo, Game, Camera, Animation, Level, ioclient, Chat, game, sidebar){	
 	//one global variable to rule them all very useful with the browser console
 	$jo=jo;
 
@@ -14,15 +16,15 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 		
 		editor.cam = new jo.Camera(0,0);
 		editor.chat = new Chat();
-		editor.sb = sidebar;		
+		editor.sb = sidebar;
 	});
 
 	editor.ready(function(){		
 		jo.state = 'edit';
 		editor.ts = new jo.TileSet({tiles:[0,1,2,3, [{i:4, t:800 }, {i:5, t: 600 }], 6],width: 64, height: 64, sprite: jo.files.img['tileset']});
-		editor.sb.setup();
-		
 		jo.game = game;
+		editor.sb.setup({entities:game.entities});
+				
 		ioclient.init(function(answer){	
 			if(answer.session){
 				console.log('connected');
@@ -86,9 +88,9 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 			if(jo.input.once('MOUSE1')){
 				for(var i in editor.objects){
 					if(m2d.intersect.pointBox( editor.cam.toWorld(jo.input.mouse), editor.objects[i])){
-						editor.sb.select = editor.selection= i;
+						editor.sb.select = editor.selection = i;
 						
-						editor.sb.fillInspector();
+						editor.sb.writeInspector(i);
 					}
 				}
 			}else if(jo.input.k('MOUSE1') ){
@@ -106,7 +108,9 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 's
 			 }
 		}
 		if(jo.tool==='tile'){
-			if(jo.input.k('MOUSE1')){
+			 if(jo.input.k('MOUSE1') && jo.input.k('SHIFT') ){
+				editor.cam.subtract(jo.input.mouseMovement());
+			 }else if(jo.input.k('MOUSE1')){
 				var p=editor.cam.toMap(jo.input.mouse);
 				editor.map.put(p.x, p.y, {index: editor.tileBrush});
 			}

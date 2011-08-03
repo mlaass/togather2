@@ -1,16 +1,16 @@
-
-define(['jo/jo', 'jo/TileMap'],function(jo, TileMap){
-	
+define(['jo/jo', 'jo/TileMap'],function(jo, TileMap){	
 	var lvl = TileMap.extend({
-		objects: [],
-		add: function(options){
-			if(!options){
-				throw new Error('options need to be defined!');
+		entities: [],
+		add: function(entity){
+			if(!entity || ! entity.type){
+				throw new Error('Entity need to be defined!');
+				return;
 			}
-			if(!options.name){
-				
-			}
-			this.objects[options.name] = new jo.entities[options.type](options);
+			entity.id = this.entities.length;
+			this.entities.push(entity);			
+		},
+		updateEntities: function(entities){
+			this.entities = entities;
 		},
 		rename: function(name){
 			this.name = name;

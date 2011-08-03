@@ -319,7 +319,8 @@ app.get('/register', all, function(req, res){
 	}});
 });
 app.post('/register', all, function(req, res){
-	console.log('register: '+req.body.user);
+	console.log('register: ');
+	console.log(req.body.user);
 	users.register(req.body.user, function(err, user){				
 		if(!err){
 			console.log('registered: '+ user.email);

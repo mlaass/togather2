@@ -7,22 +7,32 @@ $(document).ready(function(){
 	reloadbutton = $('#reload-button'),
 	buttons = $('.button');
 	
-
-	
 	buttons.each(function(vent, obj){
-		var o = $(obj), txt= o.attr('name');
+		var o = $(obj), txt = o.attr('name'),
+		link = false, fixedwidth = o.hasClass('fixed');
 		if(o.hasClass('link')){
-			o = o.find('a');
+			link=$(obj);
+			o = o.find('a');			
 		}
+		
 		if(txt === '' || !txt){
 			txt = o.attr('id');
 		}
 		var  p = $('<span>').html(txt);
 		o.append('<img src="/img/empty.png" width="32" height="32" alt="'+$(obj).attr('id')+'"/>').append(p);
 		p = o.find('span');
-		p.css({left: 8-(p.width()/2)});
-
-		
+		var w = p.width();
+		if(!fixedwidth){
+			var css = {width: Math.max(w,32)};			
+			o.css(css);
+			if(link){
+				link.css(css);
+			}
+			var img = o.find('img');
+			img.css({left: (w/2)-8});
+		}else{
+			p.css({left: 8-(w/2)});
+		}
 	});
 	reloadbutton.hide();
 	editbutton.hide();
@@ -69,6 +79,7 @@ $(document).ready(function(){
 	});
 	editbutton.click(function(){
 		if($jo.state === 'play'){
+			$jo.editor.cam.copy($jo.game.cam);
 			$jo.editor.run();
 			$jo.state = 'edit';
 			console.log('go edit');

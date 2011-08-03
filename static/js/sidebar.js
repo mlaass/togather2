@@ -1,13 +1,13 @@
 define(['jo/jo'], function(jo){
 	var sb = new (jo.Class.extend({
 		init: function(){
-			this.params= $('#inspector #properties');
 			jo.tool = 'tile';
 		},
-		setup: function(){
+		setup: function(options){
+			options = options || {};
 			var self = this;
 			var tools = $('#tools li');
-        	
+			$('#inspector').hide();
 			tools.each(function(vent, obj){
         		$(obj).click(function(){
         			$jo.tool= $(obj).attr('id');
@@ -25,19 +25,22 @@ define(['jo/jo'], function(jo){
         		});
         	});
 			
-			$('#toolprops form').each(function(ev, obj){
-				$(obj).submit(function(han){
-					var act = $(obj).attr('action');
-					$jo.editor.sb.actions[act+'Submit']($(obj));
+			$('#sidebar form').each(function(ev, obj){
+				$(obj).submit(function(){					
+					var action = $(obj).attr('action');
+					console.log(action);
+					$jo.editor.sb.actions[action]($(obj));
+					console.log(action);
 					return false;
 				});
+				console.log(obj);
 			});
 			//entity select
 			var eselect = $('#add-entity select');
-			for(var i in jo.entities){
-				eselect.append($('<option>').html(jo.entities[i].name));
+			for(var i in jo.game.entities){
+				eselect.append($('<option>').attr('name', i).html(jo.game.entities[i].name));
 			}
-			
+			this.writeInspector(jo.game.entities);
 			//tiles
 			var tselect = $('#tile-prop #tile-select'), 
 			tiles = $jo.editor.ts.getCss();			
@@ -54,46 +57,92 @@ define(['jo/jo'], function(jo){
 			});
 			
 		},
-		fillInspector: function(){
-			this.params.html('');
-			if(this.select && this.select.joObject){
-				for(var i in this.select){
-					this.addInpectorPair(i, this.select[i]);
+		writeInspector: function(object, list, name){
+			if(!list){
+				list = $('#inspector #properties');
+			}
+			name = name || '';
+			if(object){
+				for(var i in object){
+					if(typeof object[i] !== 'object'){
+						this.addInspectorPair(list, i, object[i]);
+					}else{						
+						var iname = name +'_'+ i+'Inspector',
+						$li= $('<li>')
+							.addClass('field')
+							.attr('id', i+'Field')
+							.attr('name', i)
+							.html('<h4>'+i+'</h4>'),
+						$ul = $('<ul>')
+							.addClass('properties')
+							.attr('id', iname);
+						
+						$li.append($ul);
+						list.append($li);
+						this.writeInspector(object[i],$('#'+iname), i);
+					}					
 				}
 			}
 		},
-		addInspectorPair: function( name, value) {
-			var nm = $('<label>').value(name).attr('for', name+'Field'),
-			vl = $('<input>').value(value).attr('id', name+'Field'),
-			li = $('<p>').addClass('pair').append(nm).append(vl);			
-			this.params.append(li);
+		addInspectorPair: function(parent, name, value) {
+			var $name = $('<label>')
+				.attr('for', name+'Field')
+				.html(name),
+			$value = $('<input>')
+				.val(value)
+				.attr('id', name+'Field'),
+			$li = $('<li>').attr('name', name)
+				.addClass('pair')
+				.append($name)
+				.append($value);			
+			parent.append($li);
 		},
-		applyInspector: function(){
-			if(this.select && this.select.joObject){
-				for(var i in this.select){
-					
-				}
+		readInspector: function(list, obj){
+			if(!list){
+				list = $('#inspector #properties');
 			}
+			var self= this;
+			list.find('li').each(function(i, el){
+				el = $(el);
+				var name = el.attr('name');
+				if(el.hasClass('pair')){
+					obj[name] = el.find('input').val();
+				}else if(el.hasClass('field')){
+					var $ul = el.find('ul'); 
+					obj[name] = {};
+					self.readInspector($ul, obj[name]);
+				}
+			});
+			return obj;
 		},
 		actions:{
-			addEntitySubmit: function(form){
+			addEntity: function(form){
 				var ent = form.find('select').val();
-				alert(ent);
+				console.log(ent);
 			},
-			mapSettingsSubmit: function(form){
+			mapSettings: function(form){
 				var w = $('#width').val(), 
 				h = $('#height').val(),
 				name = $('#name').val();
         		w = parseInt(w, 10), h = parseInt(h, 10);
         		$jo.editor.map.resize(w,h, {index: -1});        	
         		$jo.editor.map.rename(name);       		
+			},
+			commitInspector: function(form){
+				console.log('ok');
+				var s = {};
+				sb.readInspector(null,s);  
+				console.log(s);				
 			}
 		},
 		tools:{
 			pick: function(){
-				
+				$('#toolprops').fadeIn();
+				$('#inspector').fadeIn();
 			},
 			settings: function(){
+				$('#inspector').hide();
+				$('#toolprops').fadeIn();
         		var inputs= $('#settings-prop input');
         		inputs.each(function(ev, obj){
         			var type= $(obj).attr('type');
@@ -101,12 +150,17 @@ define(['jo/jo'], function(jo){
 	        			var o = $(this);
 	        			o.val($jo.editor.map[o.attr('id')]+'');
         			}
-        		});
+        		});        		
 			},
-			drag: function(){},
-			tile: function(){}
-		}
-		
+			drag: function(){
+				$('#inspector').hide();
+				$('#toolprops').hide();
+			},
+			tile: function(){
+				$('#inspector').hide();
+				$('#toolprops').fadeIn();
+			}
+		}		
 	}))();
 	return sb;
 });

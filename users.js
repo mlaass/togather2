@@ -48,12 +48,10 @@ UserSchema.method('encryptPassword', function(password) {
 });
 
 UserSchema.pre('save', function(next) {	
-	if (this.password && this.password.length > 4 && this.password === this.repassword) {
+	if (this.password && this.password.length > 4 ) {
 		next();
 	} 
-	else if(this.password !== this.repassword){		
-		next(new Error('confirmation password does not match'));
-	} else {		
+else {		
 		next(new Error('Invalid password, needs at least 5 characters'));
 	}
 });
@@ -62,6 +60,7 @@ UserSchema.virtual('password').set(function(password) {
 	 this._password = password;
 	 this.salt = this.makeSalt();
 	 this.hashed_password = this.encryptPassword(password);
+	 
 }).get(function() { 
 	return this._password; 
 });
@@ -109,8 +108,12 @@ module.exports.findByMail = function(email,call){
 	});
 };
 module.exports.register = function(user, call){
-	user.role = 'user';
+	if(user.password !== user.repassword){
+		call(new Error('confirmation password must be identical.'), user);
+		return;
+	}
 	delete user.repassword;
+	user.role = 'user';
 	user = new User(user);
 
 	user.save(function(err){
@@ -193,5 +196,5 @@ if(process.env.NODE_ENV !== 'production'){
 	mongoose.connect('mongodb://localhost:27017/togatherdev');
 }else{
 	//TODO: enter correct mongodb connection
-	mongoose.connect('mongodb://dev:27017/togather');
+	mongoose.connect('mongodb://localhost:27017/togather');
 }
