@@ -29,9 +29,14 @@ a:hover{
 	display: block;
 }
 .flash{
-		border: 2px solid #fe0e00;
 		margin: 8px auto;
-		background: #fefecc;
+		background: rgba(255, 32, 0, 0.5);
+		-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
+		color: white;
+		font-size: 17px;
+		font-weight: bold;
 }
 #head{
 	background: url('/img/jomoho_profile_64.png') transparent no-repeat;

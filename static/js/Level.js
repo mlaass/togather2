@@ -1,4 +1,5 @@
-define(['jo/jo', 'jo/TileMap'],function(jo, TileMap){	
+define(['jo/jo', 'jo/TileMap'],function(jo, TileMap){
+	//level
 	var lvl = TileMap.extend({
 		entities: [],
 		add: function(entity){

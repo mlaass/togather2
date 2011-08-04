@@ -19,7 +19,7 @@ define(['../jo/jo',
 		           'img/tileset.png',
 		           	], '/js/cloning/');
 	}, true);
-
+	
 	game.ready(function(){
 		game.state = 'start';
 		game.cam = new jo.Camera();

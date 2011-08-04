@@ -307,9 +307,6 @@ app.post('/login', all, function(req, res){
 app.get('/logout', login, function(req, res){
 	delete req.session.user;
 	req.session.regenerate(function(err){
-		
-		//delete req.session.user;
-		//req.session.user =;
 		res.redirect('/');
 	});	
 });

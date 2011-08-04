@@ -83,7 +83,7 @@ function getData(data){
 	return data;
 };
 LevelSchema = new Schema({
-	  'name': {type: String, 'default': initName()},
+	  'name': {type: String, 'default': initName},
 	  'date': {type: Date, 'default': Date.now},
 	  'lastUpdate': {type: Date, 'default': Date.now},
 	  'creator': {type: Schema.ObjectId},
