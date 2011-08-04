@@ -196,5 +196,5 @@ if(process.env.NODE_ENV !== 'production'){
 	mongoose.connect('mongodb://localhost:27017/togatherdev');
 }else{
 	//TODO: enter correct mongodb connection
-	mongoose.connect('mongodb://localhost:27017/togather');
+	mongoose.connect('mongodb://localhost:27017/togatherdev');
 }
