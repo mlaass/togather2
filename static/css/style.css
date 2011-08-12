@@ -82,6 +82,10 @@ a:hover{
 }
 .user-form{
 }
+form p{
+	position: relative;
+	padding-top: 16px;
+}
 .user-form label{
 	width: 160px;
 	display: inline-block;
@@ -89,12 +93,13 @@ a:hover{
 }
 .user-form label.error{
 	width: auto;
-	margin-left: 8px;
 	font-size: 12px;
-	display: block;
+	display: inline-block;
+	position: absolute;
+	top: 0;
+	left: 168px;
 	text-align: left;
 	color: red;
-	margin-left: 168px;
 }
 .user-form input[type='text'], .user-form input[type='password']{
 	margin-left: 8px;

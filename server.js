@@ -284,9 +284,9 @@ app.post('/beta-request',all, function(req, res){
 	mail.send({
 		to: req.body.request.email,
 		subject: 'Welcome to togather',
-		body: 'Hello and  welcome to the Beta \n' +
-			'go to http://'+req.header('host')+' and hav a look! \n' +
-			'your beta key is: "aedim iviepx"\n\n' +
+		body: 'Hello and Welcome to the Beta,\n\n' +
+			'go to http://'+req.header('host')+' and have a look! \n' +
+			'Your beta key is: aedimiviepx\n\n' +
 			'Have a nice Day!'
 	});
 	
@@ -342,7 +342,7 @@ app.get('/register', all, function(req, res){
 app.post('/register', all, function(req, res){
 	console.log('register: ');
 	console.log(req.body.user.name);
-	if(req.body.user.betakey.toLowerCase() ==='aedim iviepx'){
+	if(req.body.user.betakey.toLowerCase() == 'aedimiviepx'){
 		users.register(req.body.user, function(err, user){				
 			if(!err){
 				console.log('registered: '+ user.email);
