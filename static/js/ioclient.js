@@ -13,6 +13,13 @@ define(['jo/jo', 'jo/Point', 'jo/Surface', './Level'], function(jo, Point, Surfa
 		}
 		return args;
 	};
+	function fixArgs(args){
+		var a =[];
+		for(var i =0; i< args.length; i++){
+			a[i]= args[i];
+		}
+		return a;
+	};
 	function makeIdent(name, context, args){
 		return context+name+'('+JSON.stringify(args)+')';
 	};
@@ -59,14 +66,16 @@ define(['jo/jo', 'jo/Point', 'jo/Surface', './Level'], function(jo, Point, Surfa
 		
 		functions[context+':'+name] = fn;
 		
-		obj[name]= function(){			
-			var ident = makeIdent(name, context, arguments);			
+		obj[name]= function(){
+			var args = fixArgs(arguments);
+			var ident = makeIdent(name, context, args);
+			console.log(ident);
 			if(! pending[ident]){
 				if(!wait){
-					fn.apply(fn.self, arguments);
+					fn.apply(fn.self, args);
 				}				
 				pending[ident] = true;
-				socket.emit(channel, {type: 'function', name: name, context: context,  args: arguments, ident: ident});
+				socket.emit(channel, {type: 'function', name: name, context: context,  args: args, ident: ident});
 				pending.count+=1;
 				$('#saved').hide();
 				$('#loading').show();

@@ -14,16 +14,17 @@ html
           a(href='/profile') profile           
           a(href='/logout') logout 
     - if(flash.warn)
-      #warn.flash= flash.warn
+      .warn.flash= flash.warn
     - if(flash.info)
-      #info.flash= flash.info
+      .info.flash= flash.info
     - if(flash.error)
-      #error.flash= flash.error
+      .error.flash= flash.error
     
 
     #container!=body
   //- script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')
   script(type='text/javascript', src='/js/jquery.js')
   script(type='text/javascript', src='/js/plugins/jquery.form.js')
+  script(type='text/javascript', src='/js/plugins/jquery.validate.min.js')
   script(type='text/javascript', src='/js/page.js')
   script!=googleAnalytics

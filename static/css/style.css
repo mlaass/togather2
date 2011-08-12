@@ -27,6 +27,9 @@ a:hover{
 	padding: 16px;
 	background: rgba(255,255,255,0.3);
 	display: block;
+			-moz-border-radius: 8px;
+		-webkit-border-radius: 8px;
+		border-radius: 8px;
 }
 .flash{
 		margin: 8px auto;
@@ -37,6 +40,20 @@ a:hover{
 		color: white;
 		font-size: 17px;
 		font-weight: bold;
+		text-shadow: #ccc 1px 1px 0;
+}
+.flash.error{
+		background: rgba(255, 32, 0, 0.5);
+		color: white;
+}
+.flash.warn{
+		background: rgba(255, 240, 32, 0.5);
+		color: white;
+		
+}
+.flash.info{
+		background: rgba(0, 216, 32, 0.5);
+		color: white;
 }
 #head{
 	background: url('/img/jomoho_profile_64.png') transparent no-repeat;
@@ -62,6 +79,33 @@ a:hover{
 #container{
 	margin-bottom: 148px;
 	font-family: 'Delius', Arial, Helvetica, Serif; 
+}
+.user-form{
+}
+.user-form label{
+	width: 160px;
+	display: inline-block;
+	text-align: right;
+}
+.user-form label.error{
+	width: auto;
+	margin-left: 8px;
+	font-size: 12px;
+	display: block;
+	text-align: left;
+	color: red;
+	margin-left: 168px;
+}
+.user-form input[type='text'], .user-form input[type='password']{
+	margin-left: 8px;
+	width: 120px;
+}
+.user-form .submit{
+	padding: 8px;
+	text-align: right;
+	border-top: 1px dotted rgba(64,64,64,0.3);
+}
+.user-form input[type='submit']{
 }
 #create-level{
 	font-size: 18;
@@ -338,4 +382,14 @@ form#commitInspector{
 }
 #tile-select li.selected{
 	border: 2px solid #fc0;
+}
+
+.columns{}
+.columns .column{
+	display: inline-block;
+	width: 448px;
+}
+.columns .column.right{
+	margin-left: 16px;
+	float: right;
 }

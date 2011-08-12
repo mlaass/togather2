@@ -18,7 +18,8 @@ var express = require('express'),
 //environement for google analytics and the like
 var env = {
 		googa: '',
-		help:'helpfile'
+		help:'helpfile',
+		betalimit: 20
 };
 var secretphrase = 'I think we can work something out...';
 
@@ -269,6 +270,29 @@ app.get('json/levels', login, function(req, res){
 		res.send(levels);
 	});
 });
+/**
+ * beta requests
+ * 
+ */
+app.get('/beta-request',all, function(req, res){
+	res.render('user/beta-request', {locals:{
+		title: title('Beta request')
+		}});
+});
+
+app.post('/beta-request',all, function(req, res){
+	mail.send({
+		to: req.body.request.email,
+		subject: 'Welcome to togather',
+		body: 'Hello and  welcome to the Beta \n' +
+			'go to http://'+req.header('host')+' and hav a look! \n' +
+			'your beta key is: "aedim iviepx"\n\n' +
+			'Have a nice Day!'
+	});
+	
+	req.flash('info', 'check your mailbox');
+	res.redirect('/register');
+});
 
 
 /**
@@ -317,25 +341,31 @@ app.get('/register', all, function(req, res){
 });
 app.post('/register', all, function(req, res){
 	console.log('register: ');
-	console.log(req.body.user);
-	users.register(req.body.user, function(err, user){				
-		if(!err){
-			console.log('registered: '+ user.email);
-			req.session.user = user;
-			res.redirect('/');
-			mail.send({
-				to: user.email,
-				subject: 'Welcome to togather',
-				body: 'Hello '+ user.name+' welcome to togather \n' +
-					'go to http://'+req.header('host')+' and play! \n' +
-					'We won\' bother you with any more messages unless you want us to\n\n' +
-					'Have a nice Day!'
-			});
-		}else{
-			req.flash('warn', err.message);
-			res.redirect('/register');
-		}
-	});	
+	console.log(req.body.user.name);
+	if(req.body.user.betakey.toLowerCase() ==='aedim iviepx'){
+		users.register(req.body.user, function(err, user){				
+			if(!err){
+				console.log('registered: '+ user.email);
+				req.session.user = user;
+				res.redirect('/');
+//				mail.send({
+//					to: user.email,
+//					subject: 'Welcome to togather',
+//					body: 'Hello '+ user.name+' welcome to togather \n' +
+//						'go to http://'+req.header('host')+' and play! \n' +
+//						'We won\' bother you with any more messages unless you want us to\n\n' +
+//						'Have a nice Day!'
+//				});
+			}else{
+				req.flash('warn', err.message);
+				res.redirect('/register');
+			}
+		});	
+	}else{
+		req.flash('warn', 'wrong beta key');
+		res.redirect('/register');
+	}
+
 });
 app.get('/forgot-password', all, function(req, res){
 	res.render('user/forgot-password', {locals: {

@@ -1,0 +1,10 @@
+form#BetaRequestForm.user-form(action='/beta-request', method='POST')
+	h2 Request Your beta code
+	p
+		label(for='email') Email: *		
+		input#email(type='text', name='request[email]')
+	p.submit
+		input#login(type='submit', value='Submit')
+p
+	| you should get a message with your beta code very soon 
+	| Have a nice Day!

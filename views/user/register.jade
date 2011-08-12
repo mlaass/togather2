@@ -1,27 +1,33 @@
-form(action='/register', method='POST')
-	p
-		label(for='name') Name:
-	p
-		input#name(type='text', name='user[name]')
-	p
-		label(for='email') Email:
-	p
-		input#email(type='text', name='user[email]')
-	p
-		label(for='password') Password:
-	p
-		input#password(type='password', name='user[password]')
-	p
-		label(for='repassword') Repeat Password:
-	p
-		input#repassword(type='password', name='user[repassword]')
-	p
-		input#login(type='submit', value='Submit')
+.columns	
+	.column.left
+		form#registerForm.user-form(action='/register', method='POST')
+			h2 Create your free personal account
+			p
+				label(for='betakey') Beta key: *		
+				input#betakey(type='text', name='user[betakey]') 
+			p
+				label(for='name') Name: *		
+				input#name(type='text', name='user[name]')	
+			p
+				label(for='email') Email: *		
+				input#email(type='text', name='user[email]')
+			p
+				label(for='password') Password: *		
+				input#password(type='password', name='user[password]')
+			p
+				label(for='repassword') Repeat Password: *		
+				input#repassword(type='password', name='user[repassword]')
+			p
+				| Naturally we take good care of your data and won't sell it or abuse it in any other way. 
+				| Have a nice Day!
+			p.submit
+				input#login(type='submit', value='Submit')
+		
 
-p
-	a(href='/register') Register
-	,
-	a(href='/login') Login 
-p
-	| Naturally we take good care of your data and won't sell it or abuse it in any other way. 
-	| Have a nice Day!
+	.column.right
+		h2 Beta program
+		p 
+			|we are currently in beta that means you need a valid beta-code to create your account
+			|go to the
+			a(href='/beta-request') request page 
+			| to acquire your beta access code 
