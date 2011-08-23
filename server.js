@@ -88,7 +88,7 @@ app.dynamicHelpers({
 });
 
 var title= function(name){
-	return 'Togather - '+name;
+	return 'Gridflower - '+name;
 };
 var initSession = function (req, res, next){
 	next();
@@ -283,8 +283,8 @@ app.get('/beta-request',all, function(req, res){
 app.post('/beta-request',all, function(req, res){
 	mail.send({
 		to: req.body.request.email,
-		subject: 'Welcome to togather',
-		body: 'Hello and Welcome to the Beta,\n\n' +
+		subject: 'Welcome to Gridflower',
+		body: 'Hello and Welcome to the beta,\n\n' +
 			'go to http://'+req.header('host')+' and have a look! \n' +
 			'Your beta key is: aedimiviepx\n\n' +
 			'Have a nice Day!'
