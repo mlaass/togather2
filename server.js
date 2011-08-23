@@ -418,5 +418,10 @@ app.post('/reset-password', all, function(req, res){
 		}		
 	});
 });
-app.listen(3030);
+if(process.env.NODE_ENV !== 'production'){
+	app.listen(3030);
+}else{
+	app.listen(80);
+}
+
 io.listen(socket.listen(app));

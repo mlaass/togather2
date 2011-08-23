@@ -30,7 +30,7 @@ var emailfilter = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})
 UserSchema = new Schema({
 	  'email': { type: String, validate: [emailfilter, 'a valid email is required'], index: { unique: true } },
 	  'name': String,
-	  'color': {type: String, 'default': rndcolor()},
+	  'color': {type: String, 'default': rndcolor},
 	  'role': {type: String, 'default': 'user'},
 	  'date': {type: Date, 'default': Date.now},
 	  'hashed_password': String,

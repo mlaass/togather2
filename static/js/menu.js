@@ -1,3 +1,5 @@
+
+
 $(document).ready(function(){
 	settings = $('#tools #settings'),
 	chatbutton = $('#chat-button'), 
