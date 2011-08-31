@@ -137,6 +137,23 @@ app.get('/dev', admin, function(req, res){
 		title: title('dev console')
 	}});
 });
+app.get('/game/play', all, function(req, res){
+	levels.getAll( function(err, levels){
+		if(err){
+			req.flash('warn', 'level not found');
+			res.redirect('/');
+			return;
+		}
+		res.render('play',{
+			locals: {
+				title: title('Play'),
+				levelId: null,
+				levels: JSON.stringify(levels)
+			},
+			layout: 'game-layout'
+		});
+	});
+});
 
 app.get('/level/create', login, function(req, res){
 	levels.create(req.session.user._id, function(err, lvl){
@@ -195,9 +212,7 @@ app.get('/level/:level/copy', login, function(req, res){
 					clevel.data = level.data;
 					clevel.save(function(err){
 						res.redirect('/level/'+level._id+'/edit');
-					});
-					
-					
+					});			
 				}
 			});
 		});
@@ -214,9 +229,7 @@ var decorateLevels= function(req, res, levellist){
 	return levellist;
 };
 app.get('/level/list', login, function(req, res){
-
-	levels.getAll( function(err, levellist){
-
+	levels.getAll(function(err, levellist){
 		res.render('list',{
 			locals: {
 				title: title('Levels'),
@@ -234,21 +247,19 @@ var deleteLevel = function(req, res){
 					res.redirect(req.body.origin);
 				}else{
 					res.redirect('/');
-				}
-				
+				}				
 			});
 		}else{
 			req.flash('warn', 'You can not remove this level!');
 			res.redirect('/level/list');
 		}
-
 	});
 };
 
 app.get('/level/:level/delete', deleteLevel);
 app.del('/level/:level', login, deleteLevel);
 
-app.get('json/level/:from/:to', login, function(req, res){
+app.get('/json/level/:from/:to', all, function(req, res){
 	var from = parseInt(req.params.from, 10),
 	to = parseInt(req.params.from, 10),
 	num = to-from;
@@ -261,7 +272,7 @@ app.get('json/level/:from/:to', login, function(req, res){
 	});
 });
 
-app.get('json/levels', login, function(req, res){
+app.get('/json/levels', all, function(req, res){
 	levels.getAll( function(err, levels){
 		if(err){
 			res.send(err);
@@ -270,6 +281,7 @@ app.get('json/levels', login, function(req, res){
 		res.send(levels);
 	});
 });
+
 /**
  * beta requests
  * 

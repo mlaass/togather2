@@ -1,5 +1,3 @@
-
-
 require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 'chat','cloning/game', 'sidebar'], 
 		function(jo, Game, Camera, Animation, Level, ioclient, Chat, game, sidebar){	
 	//one global variable to rule them all very useful with the browser console
@@ -45,6 +43,7 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 'c
 				ioclient.sync('post', editor.chat, 'chat', true);				
 				
 				$('#loading').hide();
+				
 				$('#menu').fadeIn();
 			}
 		});		
@@ -135,6 +134,6 @@ require(['jo/jo', 'jo/Game','jo/Camera', 'jo/Animation', 'Level', 'ioclient', 'c
 			editor.map.draw({cam: editor.cam, x: p.x, y: p.y, width: jo.screen.width, height:jo.screen.height, grid: true}, new jo.Point(0,0), jo.screen);
 		}
 
-		jo.files.img.logo.draw({angle: (jo.screen.frames/60)*Math.PI, pivot: 'center'}, jo.point(jo.screen.width-48,jo.screen.height-48), jo.screen);				
+		//jo.files.img.logo.draw({angle: (jo.screen.frames/60)*Math.PI, pivot: 'center'}, jo.point(jo.screen.width-48,jo.screen.height-48), jo.screen);				
 	});	
 });

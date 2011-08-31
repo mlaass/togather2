@@ -6,6 +6,8 @@ html
     link(href='http://fonts.googleapis.com/css?family=Unkempt&v1', rel='stylesheet', type='text/css')
     link(href='http://fonts.googleapis.com/css?family=Leckerli+One&v2', rel='stylesheet', type='text/css')
     link(href='http://fonts.googleapis.com/css?family=Delius', rel='stylesheet', type='text/css')
+    link(rel='apple-touch-icon-precomposed', href='/img/jomoho_touch.png')
+    meta(name='apple-mobile-web-app-capable', content='yes')
   body
     #head
       a#title(href='/')!=title
@@ -19,7 +21,6 @@ html
       .info.flash= flash.info
     - if(flash.error)
       .error.flash= flash.error
-    
 
     #container!=body
   //- script(type='text/javascript', src='https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js')

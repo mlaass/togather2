@@ -5,7 +5,7 @@ li.panel(name='tools')
 	h2 tools
 	ul#tools
 		li#drag.button.fixed
-		li#pick.button.fixed(name='pick')
+		li#pick.button.fixed(name='pick', style='display:none;')
 		li#tile.button.fixed.active   
 		li#settings.button.fixed(name='set')
 
@@ -30,7 +30,7 @@ li#toolprops.panel
 			label(for='height') height: 
 			input#height'     		
 		p.end
-			input(type='reset', value='Cancel')
+			//input(type='reset', value='Cancel')
 			input(type='submit', value='Apply')  
 li#inspector.panel(name='inspector')
 	h2 inspector

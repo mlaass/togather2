@@ -47,6 +47,9 @@ define(['jo/jo'], function(jo){
 			for(var i in tiles){
 				tselect.append($('<li>').attr('style', tiles[i]).attr('name', i));
 			}
+			var empty ='background: url("/img/empty_tile.png");width: 64px ; height: 64px;';
+			
+			tselect.append($('<li>').attr('style', empty).attr('name', '-1'));
 			tiles = $('li', tselect);
 			tiles.each(function(ev,obj){
 				$(obj).click(function(){

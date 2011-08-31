@@ -1,5 +1,11 @@
+// When ready...
 $().ready(function(){
-	
+	// Set a timeout...
+  setTimeout(function(){
+    // Hide the address bar!
+    window.scrollTo(0, 1);
+  }, 0);
+  
 	$('form.confirm').submit(function(event){
 		if(confirm('Are you sure?')){
 			return true;
@@ -56,6 +62,4 @@ $().ready(function(){
 			// set &nbsp; as text for IE
 			label.html("&nbsp;").addClass("checked");
 		}});
-	
-	
 });

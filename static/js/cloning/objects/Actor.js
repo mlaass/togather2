@@ -1,6 +1,6 @@
 define(['../../jo/jo', '../../jo/Object'], function(jo, Object){
 	
-	jo.Actor = jo.Object.extend({
+	jo.Actor = Object.extend({
 		
 		joObject: 'Actor',
 		

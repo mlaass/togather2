@@ -9,6 +9,11 @@ $(document).ready(function(){
 	reloadbutton = $('#reload-button'),
 	buttons = $('.button');
 	
+	var isiPad = navigator.userAgent.match(/iPad/i) != null;
+	if(isiPad){
+		$('#home-button').hide();
+		$('#play-button').hide();
+	}
 	buttons.each(function(vent, obj){
 		var o = $(obj), txt = o.attr('name'),
 		link = false, fixedwidth = o.hasClass('fixed');

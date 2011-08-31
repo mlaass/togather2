@@ -1,11 +1,13 @@
 
 define(['../jo/jo', 
-        '../jo/Game', 
+        '../jo/Game',
+        '../jo/Camera',
+        '../jo/Animation',
         '../jo/TileMap',
         '../jo/math2d',
         './objects/Actor',
         './objects/Clone'], 
-		function(jo, Game, Map, m2d, Actor, Clone){
+		function(jo, Game, Camera, Animation, Map, m2d, Actor, Clone){
 	
 	var game = new Game({ name: '#canvas', fullscreen: true, fps: 30});
 	game.entities = [{type: 'player', name:'player', create: Actor }];
@@ -29,13 +31,17 @@ define(['../jo/jo',
 		game.ts.start = 5;
 		game.ts.exit = 4;
 		
-		game.removeAllObjects();
-		game.addObject('player', new Actor({name: 'player', position: new jo.Point(100, 64)}));
+		game.initPlayer();
 		game.initLevel();		
 		game.device= new jo.Animation([1,1,1], 80,42, jo.files.img.device);
-		game.player = game.getObject('player');
+		//jo.screen.debug=true;
+		
 	});
-
+	game.initPlayer = function(){
+		game.removeAllObjects();
+		game.addObject('player', new Actor({name: 'player', position: new jo.Point(100, 64)}));
+		game.player = game.getObject('player');
+	};
 	
 	var caption = function(msg){
 		jo.screen.text({ fill: jo.clr.white, stroke: 0}, new jo.Point(64, 32), msg);
@@ -93,8 +99,16 @@ define(['../jo/jo',
 	};
 
 	game.levelDone = function(){
-		//game.initLevel();
-		//alert('Level Done');
+		if(typeof game._leveldone === 'function'){
+			game._leveldone();
+		}
+		if(game.mode === 'play'){
+			game.deleteRecords();
+			game.initPlayer();
+			game.initLevel();
+			//alert('Level Done');
+		}
+
 	};
 	
 	var recording = false;
@@ -103,6 +117,8 @@ define(['../jo/jo',
 	
 	game.deleteRecords= function(){
 		game.records = [];
+		rec_frame = 0;
+		current_rec = 0;
 		game.resetRecording();		
 	};
 	game.resetRecording =function(){
@@ -133,6 +149,7 @@ define(['../jo/jo',
 		game.player = game.getObject('player');
 		
 		game.map.update(ticks);
+		this.mobilecontrols();
 		this.controls();
 		this.handleCollision();
 		
@@ -149,7 +166,23 @@ define(['../jo/jo',
 			game.obj['record'+i].fr = game.records[i][f].fr;
 		}			
 	});
-
+	game.mobilecontrols =function(){
+		if(jo.input.k('MOUSE1')){
+			var d = game.cam.toWorld(jo.input.mouse).minus(game.player.pos);
+			
+			if(Math.abs(d.x) > Math.abs(d.y)){
+				if(d.x > 16){
+					this.player.side(1);
+				}else if(d.x < -16){
+					this.player.side(-1);
+				}else{
+					this.player.stand();
+				}
+			}else{
+				this.player.jump();
+			}
+		}
+	};
 	game.controls = function(){
 		if(jo.input.once('E')){
 			game.device = true;
